@@ -7,7 +7,7 @@ i built my own data structure like:
 2. HashTable
 3. SinglyLinkedList
 
-`the documentation for these classes will comming soon.`
+`The documentation for the previous Classes will be comming soon.`
 
 ### Main Classes:
 1. Server.
