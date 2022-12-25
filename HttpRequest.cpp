@@ -25,6 +25,25 @@ unsigned int parseInt(String num){
 
 HttpRequest::HttpRequest(char* req,Client c):raw_request(req),client(c) { }
 
+char* HttpRequest::getMethod(){
+    String method;
+    switch(control_data.method){
+        case HTTP_METHOD::GET:{
+            method.push("GET");
+            break;
+        }
+        default:{
+            method.push("GET");
+        }
+    }
+
+    return method.get();
+}
+
+char* HttpRequest::getPath(){
+    return control_data.request_target.get();
+}
+
 enum PARSING_STATE { METHOD, RESOURCE, HTTP_VERSION, FIELD_NAME, FIELD_TOKEN, SPACE, CRLF, BODY };
 int HttpRequest::parse(){
     PARSING_STATE p_state = PARSING_STATE::METHOD;

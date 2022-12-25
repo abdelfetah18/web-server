@@ -29,10 +29,16 @@ typedef struct _SOCKET_INFORMATION {
 
 class WebServer {
 private:
+    typedef void (*callback)(HttpRequest*,HttpResponse*);
+    HashTable<String, callback> handlers;
     DWORD WORKER_ID;
 public:
-    WebServer(const char[]);
+    WebServer();
     ~WebServer();
 
-    static DWORD WINAPI Worker(LPVOID lpParam);
+    void listen(const char port[]);
+    void get(char* path, callback);
+    void handle(String, HttpRequest*, HttpResponse*);
+
+    //static DWORD WINAPI Worker(LPVOID lpParam);
 };

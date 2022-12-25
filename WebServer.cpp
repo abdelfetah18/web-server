@@ -6,7 +6,11 @@ WSAEVENT EventArray[WSA_MAXIMUM_WAIT_EVENTS];
 SOCKET_INFORMATION Clients[WSA_MAXIMUM_WAIT_EVENTS];
 SOCKET_INFORMATION SelectedClient;
 
-WebServer::WebServer(const char port[]){
+static DWORD WINAPI Worker(void*);
+
+WebServer::WebServer(){ }
+
+void WebServer::listen(const char port[]){
     int iResult;
     WSADATA wsaData;
 
@@ -57,7 +61,7 @@ WebServer::WebServer(const char port[]){
 
     freeaddrinfo(result);
 
-    if (listen( ListenSocket, SOMAXCONN ) == SOCKET_ERROR ) {
+    if (::listen( ListenSocket, SOMAXCONN ) == SOCKET_ERROR ) {
         printf( "Listen failed with error: %ld\n", WSAGetLastError() );
         closesocket(ListenSocket);
         WSACleanup();
@@ -72,7 +76,7 @@ WebServer::WebServer(const char port[]){
 
     EventTotal = 1;
 
-    CreateThread(NULL,0,Worker,NULL,0,&WORKER_ID);
+    CreateThread(NULL,0,Worker,(void*) this,0,&WORKER_ID);
 
     while(TRUE){
         SOCKET ClientSocket = INVALID_SOCKET;
@@ -120,7 +124,27 @@ WebServer::~WebServer(){
     return;
 }
 
-DWORD WINAPI WebServer::Worker(LPVOID lpParam){
+void WebServer::get(char* path, callback call){
+    String key("GET:");
+    key.push(path);
+    // register a callback for that path
+    handlers.set( key, call);
+}
+
+void WebServer::handle(String key, HttpRequest* req, HttpResponse* res){
+    callback call;
+    bool exist = handlers.get(key, call);
+    if(exist)
+        call(req,res);
+    else{
+        res->status(404);
+        res->setHeader("Server","abdelfetah-dev");
+        res->send("<h1>404 Not Found!</h1>");
+    }
+}
+
+DWORD WINAPI Worker(void* arg){
+    WebServer* Server = (WebServer*) arg;
     DWORD Index;
     DWORD BytesTransferred = 0;
     DWORD Flags = 0;
@@ -152,9 +176,17 @@ DWORD WINAPI WebServer::Worker(LPVOID lpParam){
             printf("parsing error: %d\n", is_valid);
         }else{
             HttpResponse res(client);
+
+            String key(req.getMethod());
+            key.push(":");
+            key.push(req.getPath());
+            key.show();
+            Server->handle(key, &req, &res);
+            printf("\n");
+            /*
             res.setHeader("Server", "MyServer");
             res.send("<h1>HelloWorld!</h1>");
-            /*
+
              char default_response[] = "HTTP/1.1 200 OK\n\rContent-Length: 20\n\rServer: MyServer\n\rContent-Type: text/html\n\r\n\r<h1>HelloWorld!</h1>";
 
             // send_a_default_response

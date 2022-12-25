@@ -27,6 +27,54 @@ i built my own data structure like:
 
 ---
 
+# Code Example
+
+```c++
+
+#include "WebServer.h"
+#pragma comment(lib, "Ws2_32.lib")
+
+#include "base/HashTable.h"
+#include "base/String.h"
+
+
+void Home(HttpRequest* req,HttpResponse* res){
+    res->send("<h1>Home!</h1>");
+}
+
+void About(HttpRequest* req,HttpResponse* res){
+    res->send("<h1>About!</h1>");
+}
+
+int main()
+{
+    WebServer server;
+    server.get("/home", Home);
+    server.get("/About", About);
+    server.listen("8080");
+    return 0;
+}
+
+
+```
+
+as you can see in the code, first create an Object with type of `WebServer` and register the paths you wonna server.
+
+```c++
+    // callback function must be in type void (HttpRequest*, HttpResponse*)
+    void callback(HttpRequest* req,HttpResponse* res){
+        res->send("<h1>HelloWorld!</h1>");
+    }
+
+    // path must equal the request if it uppercase the request will only apply to uppercase and the same for lower case and must start with '/' character
+    server.get(<path>, callback);
+```
+
+
+currently we support only get method, and it will be extended to other methods.
+
+
+---
 # Build
 
 ```bash

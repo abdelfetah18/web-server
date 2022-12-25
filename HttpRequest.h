@@ -27,6 +27,8 @@ class HttpRequest {
 public:
     HttpRequest(char*,Client);
     int parse();
+    char* getMethod();
+    char* getPath();
 
 private:
     struct ControlData {
