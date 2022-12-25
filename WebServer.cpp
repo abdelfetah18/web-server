@@ -124,6 +124,11 @@ WebServer::~WebServer(){
     return;
 }
 
+void WebServer::use_static_path(char* path){
+    String item(path);
+    static_paths.append(item);
+}
+
 void WebServer::get(char* path, callback call){
     String key("GET:");
     key.push(path);
@@ -132,14 +137,111 @@ void WebServer::get(char* path, callback call){
 }
 
 void WebServer::handle(String key, HttpRequest* req, HttpResponse* res){
-    callback call;
-    bool exist = handlers.get(key, call);
-    if(exist)
-        call(req,res);
-    else{
-        res->status(404);
-        res->setHeader("Server","abdelfetah-dev");
-        res->send("<h1>404 Not Found!</h1>");
+    // NOTE: this is not a good way to extract a path from a String
+    char* str = key.get();
+    while(*(str++) != ':'){ }
+    str++;
+    String path(str);
+
+    bool found = false;
+    LinkedListIterator<LinkedList<String>::Bucket> iterator(static_paths.get_head());
+    while(!iterator.is_end()){
+        if(path.startWith(iterator.node()->value)){
+            found = true;
+            break;
+        }
+        iterator.increment();
+    }
+
+    if(found){
+        // readfiles and send response
+        // Open a handle to the file
+         HANDLE hFile = CreateFile(path.get(), GENERIC_READ,0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+
+         if (hFile == INVALID_HANDLE_VALUE) {
+             printf("\nINVALID_HANDLE_VALUE %d\n", GetLastError());
+           // An error occurred
+             res->status(404);
+             res->setHeader("Server","abdelfetah-dev");
+             res->send("<h1>404 Not Found!</h1>");
+             return;
+         }
+
+         // Determine the size of the file
+         DWORD fileSize = GetFileSize(hFile, NULL);
+
+         // Allocate a buffer to hold the file contents
+         char* buffer = new char[fileSize+1];
+            buffer[fileSize] = '\0';
+         // Read the contents of the file
+         DWORD bytesRead;
+         bool success = ReadFile(hFile, buffer, fileSize, &bytesRead, nullptr);
+
+         if (!success) {
+             printf("\nReadFile failed! %d\n", GetLastError());
+           // An error occurred
+             res->status(404);
+             res->setHeader("Server","abdelfetah-dev");
+             res->send("<h1>404 Not Found!</h1>");
+             return;
+         }
+
+         // TODO: implement a way to map file extensions on its mimeType.
+
+         // determine a mimeType by its extension.
+        String ext(path.get() + path.indexOf('.'));
+        ext.to_lower_case();
+        // .png
+        bool is_set = false;
+        if(ext.startWith(String(".png"))){
+            res->setHeader("Content-Type","image/png");
+            is_set = true;
+        }
+
+        // .jpg, .jpeg, .jfif, .pjpeg, .pjp
+        if(ext.startWith(String(".jpg")) || ext.startWith(String(".jpeg")) || ext.startWith(String(".jfif")) || ext.startWith(String(".pjpeg")) || ext.startWith(String(".pjp"))){
+            res->setHeader("Content-Type","image/jpeg");
+            is_set = true;
+        }
+
+        if(ext.startWith(String(".html"))){
+            res->setHeader("Content-Type", "text/html");
+            is_set = true;
+        }
+
+        if(ext.startWith(String(".js"))){
+            res->setHeader("Content-Type", "text/javascript");
+            is_set = true;
+        }
+
+        if(ext.startWith(String(".json"))){
+            res->setHeader("Content-Type", "application/json");
+            is_set = true;
+        }
+
+        if(!is_set){
+            res->setHeader("Content-Type","application/octet-stream");
+            is_set = true;
+        }
+
+        res->status(200);
+         res->send(buffer, fileSize);
+
+         // Free the buffer
+         delete[] buffer;
+
+         // Close the handle to the file
+         CloseHandle(hFile);
+    }else{
+        callback call;
+        bool exist = handlers.get(key, call);
+        if(exist)
+            call(req,res);
+        else{
+            res->status(404);
+            res->setHeader("Server","abdelfetah-dev");
+            res->send("<h1>404 Not Found!</h1>");
+        }
     }
 }
 

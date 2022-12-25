@@ -12,6 +12,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "C:/Users/amazon/Desktop/WebServer/HttpRequest.cpp" "CMakeFiles/WebServer.dir/HttpRequest.cpp.obj" "gcc" "CMakeFiles/WebServer.dir/HttpRequest.cpp.obj.d"
   "C:/Users/amazon/Desktop/WebServer/HttpResponse.cpp" "CMakeFiles/WebServer.dir/HttpResponse.cpp.obj" "gcc" "CMakeFiles/WebServer.dir/HttpResponse.cpp.obj.d"
   "C:/Users/amazon/Desktop/WebServer/WebServer.cpp" "CMakeFiles/WebServer.dir/WebServer.cpp.obj" "gcc" "CMakeFiles/WebServer.dir/WebServer.cpp.obj.d"
+  "C:/Users/amazon/Desktop/WebServer/base/ByteBuffer.cpp" "CMakeFiles/WebServer.dir/base/ByteBuffer.cpp.obj" "gcc" "CMakeFiles/WebServer.dir/base/ByteBuffer.cpp.obj.d"
   "C:/Users/amazon/Desktop/WebServer/base/String.cpp" "CMakeFiles/WebServer.dir/base/String.cpp.obj" "gcc" "CMakeFiles/WebServer.dir/base/String.cpp.obj.d"
   "C:/Users/amazon/Desktop/WebServer/main.cpp" "CMakeFiles/WebServer.dir/main.cpp.obj" "gcc" "CMakeFiles/WebServer.dir/main.cpp.obj.d"
   )

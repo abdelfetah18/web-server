@@ -224,6 +224,30 @@ WebServer.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\WebServer.dir\build.make CMakeFiles/WebServer.dir/WebServer.cpp.s
 .PHONY : WebServer.cpp.s
 
+base/ByteBuffer.obj: base/ByteBuffer.cpp.obj
+.PHONY : base/ByteBuffer.obj
+
+# target to build an object file
+base/ByteBuffer.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\WebServer.dir\build.make CMakeFiles/WebServer.dir/base/ByteBuffer.cpp.obj
+.PHONY : base/ByteBuffer.cpp.obj
+
+base/ByteBuffer.i: base/ByteBuffer.cpp.i
+.PHONY : base/ByteBuffer.i
+
+# target to preprocess a source file
+base/ByteBuffer.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\WebServer.dir\build.make CMakeFiles/WebServer.dir/base/ByteBuffer.cpp.i
+.PHONY : base/ByteBuffer.cpp.i
+
+base/ByteBuffer.s: base/ByteBuffer.cpp.s
+.PHONY : base/ByteBuffer.s
+
+# target to generate assembly for a file
+base/ByteBuffer.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\WebServer.dir\build.make CMakeFiles/WebServer.dir/base/ByteBuffer.cpp.s
+.PHONY : base/ByteBuffer.cpp.s
+
 base/String.obj: base/String.cpp.obj
 .PHONY : base/String.obj
 
@@ -293,6 +317,9 @@ help:
 	@echo ... WebServer.obj
 	@echo ... WebServer.i
 	@echo ... WebServer.s
+	@echo ... base/ByteBuffer.obj
+	@echo ... base/ByteBuffer.i
+	@echo ... base/ByteBuffer.s
 	@echo ... base/String.obj
 	@echo ... base/String.i
 	@echo ... base/String.s

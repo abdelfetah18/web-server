@@ -7,7 +7,7 @@
 template <typename TYPE>
 class LinkedListIterator {
 public:
-    LinkedListIterator(TYPE* node): m_node(node), m_next(node->next){ }
+    LinkedListIterator(TYPE* node): m_node(node), m_next(node != nullptr ? node->next : nullptr){ }
 
     TYPE* prev(){ return m_prev; }
     TYPE* node(){ return m_node; }
@@ -84,6 +84,16 @@ public:
         for(Bucket* cur = head; cur != nullptr; cur = cur->next){
             cur->value.show();
         }
+    }
+
+    bool includes(TYPE value){
+        Bucket* cur = head;
+        while(cur != nullptr){
+            if(cur->value == value)
+                return true;
+            cur = cur->next;
+        }
+        return false;
     }
 
     TYPE getHead(){

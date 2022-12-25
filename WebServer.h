@@ -31,11 +31,13 @@ class WebServer {
 private:
     typedef void (*callback)(HttpRequest*,HttpResponse*);
     HashTable<String, callback> handlers;
+    LinkedList<String> static_paths;
     DWORD WORKER_ID;
 public:
     WebServer();
     ~WebServer();
 
+    void use_static_path(char*);
     void listen(const char port[]);
     void get(char* path, callback);
     void handle(String, HttpRequest*, HttpResponse*);

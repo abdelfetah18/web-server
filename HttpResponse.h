@@ -1,6 +1,7 @@
 #ifndef HTTPRESPONSE_H
 #define HTTPRESPONSE_H
 
+#include "base/ByteBuffer.h"
 #include "base/LinkedList.h"
 #include "base/String.h"
 #include "Client.h"
@@ -9,10 +10,12 @@ class HttpResponse {
 public:
     HttpResponse(Client);
     void status(int);
-    char* get_raw_response();
+    ByteBuffer get_raw_response();
     void setHeader(const char*,const char*);
     void send(const char*);
-
+    void send(char*,int);
+    uint get_control_data_size();
+    uint get_header_fields_size();
 
 private:
     struct ControlData {
@@ -27,10 +30,10 @@ private:
     };
 
     Client client;
-    String raw_response;
+    ByteBuffer raw_response;
     ControlData control_data;
     LinkedList<Field> header_fields;
-    String body;
+    ByteBuffer body;
 };
 
 #endif // HTTPRESPONSE_H

@@ -11,7 +11,8 @@ set(SOURCES
     WebServer.cpp
     HttpRequest.cpp
     HttpResponse.cpp
-    base/String.cpp)
+    base/String.cpp
+    base/ByteBuffer.cpp)
 
 set(HEADERS
     Client.h
@@ -19,6 +20,7 @@ set(HEADERS
     HttpRequest.h
     HttpResponse.h
     base/String.h
+    base/ByteBuffer.h
     base/HashTable.h
     base/LinkedList.h)
 

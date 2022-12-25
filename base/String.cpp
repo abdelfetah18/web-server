@@ -10,7 +10,7 @@ int strlen(char* data){
 }
 
 int strlen(const char* data){
-    int i=0;
+    uint i = 0;
     while(data[i] != '\0'){
         i++;
     }
@@ -18,7 +18,7 @@ int strlen(const char* data){
 }
 
 void copyFromTo(char* src,char* dst,int size){
-    for(int i=0; i < size; i++){
+    for(uint i=0; i < size; i++){
         dst[i] = src[i];
     }
     dst[size] = '\0';
@@ -33,19 +33,49 @@ String::String(char data[]){
 }
 
 String::String(){
-    for(int i = 0; i < capacity; i++){
+    for(uint i = 0; i < capacity; i++){
         str[i] = '\0';
     }
 }
 String::~String(){}
 
+int String::indexOf(char c){
+    uint index = 0;
+    for(;index < size; index++){
+        if(str[index] == c)
+            return index;
+    }
+    return -1;
+}
+
+void String::to_lower_case(){
+    for(uint i = 0; i < size; i++){
+        if(str[i] >= 'A' && str[i] <= 'Z'){
+            str[i] = str[i] + ('a' - 'A');
+        }else{
+            str[i] = str[i];
+        }
+    }
+
+}
+
+void String::to_upper_case(){
+    for(uint i = 0; i < size; i++){
+        if(str[i] >= 'a' && str[i] <= 'z'){
+            str[i] = str[i] - ('a' - 'A');
+        }else{
+            str[i] = str[i];
+        }
+    }
+}
+
 void String::push(const char data[]){
-    int len = strlen(data);
+    uint len = strlen(data);
     push((char*)data, len);
 }
 
 void String::push(char data[]){
-    int len = strlen(data);
+    uint len = strlen(data);
     push(data, len);
 }
 
@@ -65,7 +95,7 @@ void String::push(char data[],int len){
         if(capacity > len){
            copyFromTo(data, str, len);
         }else{
-            capacity = (((size + len) / 8)+1) * 8;
+            capacity = (((size + len) / 8) + 1) * 8;
             str = new char[capacity];
             copyFromTo( data, str, len);
         }
@@ -81,16 +111,33 @@ void String::push(String c){
     push(c.get(),c.length());
 }
 
+void String::set(char* data){
+    uint len = strlen(data);
+    if(len > capacity){
+        capacity = ((len / 8) + 1) * 8;
+        char* buffer = new char[capacity];
+        delete[] str;
+        str = buffer;
+    }
+    for(uint i = 0; i < capacity; i++)
+        str[i] = '\0';
+
+    for(uint i = 0; i < len; i++)
+        str[i] = data[i];
+    str[len] = '\0';
+    size = len;
+}
+
 char* String::get(){
     return str;
 }
 
-int String::length(){
+uint String::length(){
     return size;
 }
 
 void String::clear(){
-    for(int i=0; i < capacity; i++){
+    for(uint i=0; i < capacity; i++){
         str[i] = '\0';
     }
     size = 0;
@@ -100,11 +147,26 @@ void String::show(){
     printf("%s", str);
 }
 
+bool String::startWith(String other){
+    char* target = other.get();
+    char* source = str;
+    bool same = true;
+    while(*source != '\0' && *target != '\0'){
+        if(*target != *source){
+            same = false;
+            break;
+        }
+        target++;
+        source++;
+    }
+    return same;
+}
+
 bool String::lookup(const char* data){
     bool found = false;
-    for(int i=0; i < size; i++){
+    for(uint i=0; i < size; i++){
         found = true;
-        for(int j=0; j < strlen(data); j++){
+        for(uint j=0; j < strlen(data); j++){
             if(str[i+j] != data[j]){
                 found = false;
             }
