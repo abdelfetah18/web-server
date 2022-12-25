@@ -84,22 +84,30 @@ currently we support only get method, and it will be extended to other methods.
 then
 
 ```bash
-    $ cmake -S . -B C:/Users/amazon/Desktop/WebServer/output "-G<generator>" "-DCMAKE_BUILD_TYPE:STRING=Debug" "-DCMAKE_C_COMPILER:STRING=<c-compile-path>" "-DCMAKE_CXX_COMPILER:STRING=<cpp-compile-path>"
+    cmake -S . -B C:/Users/amazon/Desktop/WebServer/output "-G<generator>" "-DCMAKE_BUILD_TYPE:STRING=Debug" "-DCMAKE_C_COMPILER:STRING=<c-compile-path>" "-DCMAKE_CXX_COMPILER:STRING=<cpp-compile-path>"
 ```
 and build :
 ```bash
-    $ cmake --build output --target all
+    cmake --build output --target all
 ```
 
 ### Example how to use these commands, like in my case i use MinGw MakeFiles generator :
 
 ```bash
-    $ cd C:/Users/abdelfetah-dev/Desktop/WebServer
-    
-    $ cmake -S . -B C:/Users/abdelfetah-dev/Desktop/WebServer/output "-GMinGW Makefiles" "-DCMAKE_BUILD_TYPE:STRING=Debug" "-DCMAKE_C_COMPILER:STRING=C:/Program Files/CodeBlocks/MinGW/bin/gcc.exe" "-DCMAKE_CXX_COMPILER:STRING=C:/Program Files/CodeBlocks/MinGW/bin/g++.exe"
-
-    $ cmake --build output --target all
-
-    $ "./output/WebServer.exe"
+    cd C:/Users/abdelfetah-dev/Desktop/WebServer
 ```
+
+```bash
+    cmake -S . -B C:/Users/abdelfetah-dev/Desktop/WebServer/output "-GMinGW Makefiles" "-DCMAKE_BUILD_TYPE:STRING=Debug" "-DCMAKE_C_COMPILER:STRING=C:/Program Files/CodeBlocks/MinGW/bin/gcc.exe" "-DCMAKE_CXX_COMPILER:STRING=C:/Program Files/CodeBlocks/MinGW/bin/g++.exe"
+```
+
+```bash
+    cmake --build output --target all
+```
+
+```bash
+    "./output/WebServer.exe"
+```
+
+
 
