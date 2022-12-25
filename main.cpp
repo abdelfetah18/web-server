@@ -15,8 +15,6 @@ void About(HttpRequest* req,HttpResponse* res){
     res->send("<h1>About!</h1>");
 }
 
-#include "base/ByteBuffer.h"
-
 int main()
 {
     WebServer server;
