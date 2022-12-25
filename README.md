@@ -27,6 +27,13 @@ i built my own data structure like:
 
 ---
 
+# Features
+
+1. Specifie a static path (directory) where files will be served if matches the available mimeTypes.
+2. Handle a request for a specific path by using a callback that give you control over request and response objects.
+
+and more features will be comming soon. like a json library that will help you generate a custom response for an api business logic.
+
 # Code Example
 
 ```c++
