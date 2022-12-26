@@ -25,11 +25,17 @@ void copyFromTo(char* src,char* dst,int size){
 }
 
 String::String(char data[]){
-    if(data != nullptr){
-        str = new char[strlen(data) + 1];
-        copyFromTo( data, str, strlen(data));
-        size = strlen(str);
+    uint len = strlen(data);
+    if(len >= capacity){
+        capacity = ((len / 8) + 1) * 8;
+        delete[] str;
+        str = new char[capacity];
     }
+    for(uint i = 0; i < capacity; i++){
+        str[i] = '\0';
+    }
+    copyFromTo( data, str, len);
+    size = len;
 }
 
 String::String(){
@@ -37,7 +43,26 @@ String::String(){
         str[i] = '\0';
     }
 }
-String::~String(){}
+
+String::String(const String& copy){
+    delete[] str;
+    capacity = copy.capacity;
+    size = copy.size;
+    str = new char[capacity];
+    copyFromTo(copy.str, str, size);
+}
+
+void String::operator=(String &copy){
+    delete[] str;
+    capacity = copy.capacity;
+    size = copy.size;
+    str = new char[capacity];
+    copyFromTo(copy.str, str, size);
+}
+
+String::~String(){
+    delete[] str;
+}
 
 int String::indexOf(char c){
     uint index = 0;

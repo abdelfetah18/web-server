@@ -25,7 +25,7 @@ unsigned int parseInt(String num){
 
 HttpRequest::HttpRequest(char* req,Client c):raw_request(req),client(c) { }
 
-char* HttpRequest::getMethod(){
+String HttpRequest::getMethod(){
     String method;
     switch(control_data.method){
         case HTTP_METHOD::GET:{
@@ -37,7 +37,7 @@ char* HttpRequest::getMethod(){
         }
     }
 
-    return method.get();
+    return method;
 }
 
 char* HttpRequest::getPath(){

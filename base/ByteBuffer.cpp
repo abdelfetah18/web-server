@@ -1,7 +1,18 @@
 #include "ByteBuffer.h"
 
 ByteBuffer::ByteBuffer(){ }
-ByteBuffer::~ByteBuffer(){ }
+ByteBuffer::ByteBuffer(const ByteBuffer& copy){
+    delete[] buffer;
+    capacity = copy.capacity;
+    buffer = new Byte[capacity];
+    size = copy.size;
+    for(uint i = 0; i < capacity; i++)
+        buffer[i] = copy.buffer[i];
+}
+
+ByteBuffer::~ByteBuffer(){
+    delete[] buffer;
+}
 
 void clean_buffer(Byte* buffer, uint size){
     for(uint i = 0; i < size; i++)
@@ -89,6 +100,15 @@ void ByteBuffer::show(){
         printf("%.2x ", buffer[i]);
     }
     printf("\n=============================================");
+}
+
+void ByteBuffer::operator=(ByteBuffer& copy){
+    delete[] buffer;
+    capacity = copy.capacity;
+    buffer = new Byte[capacity];
+    size = copy.size;
+    for(uint i = 0; i < capacity; i++)
+        buffer[i] = copy.buffer[i];
 }
 
 Byte* ByteBuffer::get_buffer(){ return buffer;}

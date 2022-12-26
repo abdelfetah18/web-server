@@ -15,6 +15,12 @@ void About(HttpRequest* req,HttpResponse* res){
     res->send("<h1>About!</h1>");
 }
 
+void test(String str){
+    printf("str: ");
+    str.show();
+    printf("\n");
+}
+
 int main()
 {
     WebServer server;

@@ -125,8 +125,7 @@ WebServer::~WebServer(){
 }
 
 void WebServer::use_static_path(char* path){
-    String item(path);
-    static_paths.append(item);
+    static_paths.append(String(path));
 }
 
 void WebServer::get(char* path, callback call){
@@ -152,7 +151,6 @@ void WebServer::handle(String key, HttpRequest* req, HttpResponse* res){
         }
         iterator.increment();
     }
-
     if(found){
         // readfiles and send response
         // Open a handle to the file
@@ -172,7 +170,7 @@ void WebServer::handle(String key, HttpRequest* req, HttpResponse* res){
 
          // Allocate a buffer to hold the file contents
          char* buffer = new char[fileSize+1];
-            buffer[fileSize] = '\0';
+
          // Read the contents of the file
          DWORD bytesRead;
          bool success = ReadFile(hFile, buffer, fileSize, &bytesRead, nullptr);
@@ -219,19 +217,25 @@ void WebServer::handle(String key, HttpRequest* req, HttpResponse* res){
             is_set = true;
         }
 
+        if(ext.startWith(String(".mp4"))){
+            res->setHeader("Content-Type","video/mp4");
+            is_set = true;
+        }
+
+        // if files exist with unkonws mediaType.
         if(!is_set){
             res->setHeader("Content-Type","application/octet-stream");
             is_set = true;
         }
 
         res->status(200);
-         res->send(buffer, fileSize);
+        res->send(buffer, fileSize);
 
-         // Free the buffer
-         delete[] buffer;
+        // Free the buffer
+        delete[] buffer;
 
-         // Close the handle to the file
-         CloseHandle(hFile);
+        // Close the handle to the file
+        CloseHandle(hFile);
     }else{
         callback call;
         bool exist = handlers.get(key, call);

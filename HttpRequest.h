@@ -27,7 +27,7 @@ class HttpRequest {
 public:
     HttpRequest(char*,Client);
     int parse();
-    char* getMethod();
+    String getMethod();
     char* getPath();
 
 private:

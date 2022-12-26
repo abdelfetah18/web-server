@@ -9,6 +9,7 @@ typedef unsigned int uint;
 class ByteBuffer {
 public:
     ByteBuffer();
+    ByteBuffer(const ByteBuffer&);
     ByteBuffer(Byte);
     ByteBuffer(Byte*,uint);
     ~ByteBuffer();
@@ -17,6 +18,7 @@ public:
     void append(Byte*,uint);
     void append(ByteBuffer);
     void show();
+    void operator=(ByteBuffer&);
     uint get_size();
     uint get_capacity();
     Byte* get_buffer();
