@@ -128,11 +128,87 @@ void WebServer::use_static_path(char* path){
     static_paths.append(String(path));
 }
 
+// a dynamic path is a path that start with column character ':' to indicate its can be changable.
+bool is_dynamic_path(char* path){
+    uint index = 0;
+    while(path[index] != '\0'){
+        if(path[index] == '/' && path[index+1] == ':'){
+            return true;
+        }
+        index += 1;
+    }
+    return false;
+}
+
 void WebServer::get(char* path, callback call){
     String key("GET:");
     key.push(path);
     // register a callback for that path
-    handlers.set( key, call);
+    if(is_dynamic_path(path)){
+        DynamicHandler handler;
+        handler.call = call;
+        handler.dynamic_path = key;
+        dynamic_handlers.append(handler);
+    }else{
+        handlers.set( key, call);
+    }
+}
+
+// TODO: improve the algorithm
+bool match_dynamic_path(String static_path,String dynamic_path,HashTable<String,String> &params){
+    uint i = 0;
+    uint j = 0;
+    uint static_path_len = static_path.length();
+    uint dynamic_path_len = dynamic_path.length();
+    char* a = static_path.get();
+    char* b = dynamic_path.get();
+    // we match the req method
+    while(a[i] != ':'){
+        if(a[i] != b[j])
+            return false;
+        i += 1;
+        j += 1;
+    }
+
+    i += 1;
+    j += 1;
+
+    // algorithm to math the dynamic paths with the requested paths.
+    while(i < static_path_len && j < dynamic_path_len){
+        String a_1;
+        String b_1;
+        if(a[i] == '/'){
+            i += 1;
+            while(i < static_path_len && a[i] != '/'){
+                a_1.push(a[i]);
+                i += 1;
+            }
+        }
+
+        if(b[j] == '/'){
+            j += 1;
+            while(j < dynamic_path_len && b[j] != '/'){
+                b_1.push(b[j]);
+                j += 1;
+            }
+        }
+
+        if(!b_1.startWith(":")){
+            if(!(a_1 == b_1)){
+                return false;
+            }
+        }else{
+            params.set(String(b_1.get() + 1),a_1);
+        }
+    }
+    if((static_path_len - i) == 0 && (dynamic_path_len - j) == 0 ){
+        return true;
+    }else{
+        if(static_path_len - i == 1 && a[i] == '/'){
+            return true;
+        }
+        return false;
+    }
 }
 
 void WebServer::handle(String key, HttpRequest* req, HttpResponse* res){
@@ -237,14 +313,29 @@ void WebServer::handle(String key, HttpRequest* req, HttpResponse* res){
         // Close the handle to the file
         CloseHandle(hFile);
     }else{
-        callback call;
-        bool exist = handlers.get(key, call);
-        if(exist)
-            call(req,res);
-        else{
-            res->status(404);
-            res->setHeader("Server","abdelfetah-dev");
-            res->send("<h1>404 Not Found!</h1>");
+        // TODO: improve the algorithm
+        bool found = false;
+        // first we check in dynamic handlers
+        LinkedListIterator<LinkedList<DynamicHandler>::Bucket> iterator(dynamic_handlers.get_head());
+        while(!iterator.is_end()){
+            if(match_dynamic_path(key, iterator.node()->value.dynamic_path, req->params)){
+                iterator.node()->value.call(req,res);
+                found = true;
+            }
+            iterator.increment();
+        }
+
+        // and if we didnt find anything then we check in static handlers
+        if(!found){
+            callback call;
+            bool exist = handlers.get(key, call);
+            if(exist)
+                call(req,res);
+            else{
+                res->status(404);
+                res->setHeader("Server","abdelfetah-dev");
+                res->send("<h1>404 Not Found!</h1>");
+            }
         }
     }
 }

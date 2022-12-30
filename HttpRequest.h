@@ -25,6 +25,7 @@ enum HTTP_METHOD { GET, HEAD, POST, PUT, DELETE_, CONNECT, OPTIONS, TRACE };
 
 class HttpRequest {
 public:
+    HashTable<String,String> params;
     HttpRequest(char*,Client);
     int parse();
     String getMethod();

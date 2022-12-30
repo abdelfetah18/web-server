@@ -29,9 +29,9 @@ i built my own data structure like:
 
 # Features
 
-1. Specifie a static path (directory) where files will be served if matches the available mimeTypes.
+1. the ability to set a static path (directory) where files will be served if matches the available mimeTypes.
 2. Handle a request for a specific path by using a callback that give you control over request and response objects.
-
+3. dynamic path, which mean you can pass params through your path.
 and more features will be comming soon. like a json library that will help you generate a custom response for an api business logic.
 
 # Code Example
@@ -55,13 +55,22 @@ void About(HttpRequest* req,HttpResponse* res){
     res->send("<h1>About!</h1>");
 }
 
+void DynamicPathHandler(HttpRequest* req, HttpResponse* res){
+    res->status(200);
+    res->send(req->params.get("username"));
+}
 
 int main()
 {
     WebServer server;
-    server.use_static_path("public"); // server /public path as a static path
+    server.use_static_path("public");
     server.get("/home", Home);
     server.get("/About", About);
+    // you can have multiple params through url as you can see
+    // in this example we have two params 'username' and 'id'.
+    // you can access the params from req class.
+    // like this: req->params.get(<param>)
+    server.get("/users/:username/dashboard/:id", DynamicPathHandler);
     server.listen("8080");
     return 0;
 }
