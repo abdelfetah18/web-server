@@ -2,6 +2,7 @@
 #define HTTPREQUEST_H
 
 #include "base/String.h"
+#include "base/ByteBuffer.h"
 #include "base/HashTable.h"
 #include "Client.h"
 
@@ -42,7 +43,7 @@ private:
     String raw_request;
     ControlData control_data;
     HashTable<String,String> header_fields;
-    String body;
+    ByteBuffer body;
 };
 
 #endif // HTTPREQUEST_H

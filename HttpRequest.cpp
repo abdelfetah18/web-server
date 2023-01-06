@@ -174,8 +174,11 @@ int HttpRequest::parse(){
             if(header_fields.get("Content-Length", content_length)){
                 unsigned int len = parseInt(content_length);
                 for(unsigned int i = pos; i < pos+len; i++){
-                    body.push(str[i]);
+                    body.append((Byte) str[i]);
                 }
+                // handle body
+                // Content-Type: application/json
+                // Content-Type: application/json
                 return 0;
             }
             return 1;

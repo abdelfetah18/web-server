@@ -200,6 +200,30 @@ HttpResponse.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\WebServer.dir\build.make CMakeFiles/WebServer.dir/HttpResponse.cpp.s
 .PHONY : HttpResponse.cpp.s
 
+Json.obj: Json.cpp.obj
+.PHONY : Json.obj
+
+# target to build an object file
+Json.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\WebServer.dir\build.make CMakeFiles/WebServer.dir/Json.cpp.obj
+.PHONY : Json.cpp.obj
+
+Json.i: Json.cpp.i
+.PHONY : Json.i
+
+# target to preprocess a source file
+Json.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\WebServer.dir\build.make CMakeFiles/WebServer.dir/Json.cpp.i
+.PHONY : Json.cpp.i
+
+Json.s: Json.cpp.s
+.PHONY : Json.s
+
+# target to generate assembly for a file
+Json.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\WebServer.dir\build.make CMakeFiles/WebServer.dir/Json.cpp.s
+.PHONY : Json.cpp.s
+
 WebServer.obj: WebServer.cpp.obj
 .PHONY : WebServer.obj
 
@@ -248,6 +272,30 @@ base/ByteBuffer.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\WebServer.dir\build.make CMakeFiles/WebServer.dir/base/ByteBuffer.cpp.s
 .PHONY : base/ByteBuffer.cpp.s
 
+base/GenericParser.obj: base/GenericParser.cpp.obj
+.PHONY : base/GenericParser.obj
+
+# target to build an object file
+base/GenericParser.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\WebServer.dir\build.make CMakeFiles/WebServer.dir/base/GenericParser.cpp.obj
+.PHONY : base/GenericParser.cpp.obj
+
+base/GenericParser.i: base/GenericParser.cpp.i
+.PHONY : base/GenericParser.i
+
+# target to preprocess a source file
+base/GenericParser.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\WebServer.dir\build.make CMakeFiles/WebServer.dir/base/GenericParser.cpp.i
+.PHONY : base/GenericParser.cpp.i
+
+base/GenericParser.s: base/GenericParser.cpp.s
+.PHONY : base/GenericParser.s
+
+# target to generate assembly for a file
+base/GenericParser.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\WebServer.dir\build.make CMakeFiles/WebServer.dir/base/GenericParser.cpp.s
+.PHONY : base/GenericParser.cpp.s
+
 base/String.obj: base/String.cpp.obj
 .PHONY : base/String.obj
 
@@ -271,6 +319,30 @@ base/String.s: base/String.cpp.s
 base/String.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\WebServer.dir\build.make CMakeFiles/WebServer.dir/base/String.cpp.s
 .PHONY : base/String.cpp.s
+
+base/StringView.obj: base/StringView.cpp.obj
+.PHONY : base/StringView.obj
+
+# target to build an object file
+base/StringView.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\WebServer.dir\build.make CMakeFiles/WebServer.dir/base/StringView.cpp.obj
+.PHONY : base/StringView.cpp.obj
+
+base/StringView.i: base/StringView.cpp.i
+.PHONY : base/StringView.i
+
+# target to preprocess a source file
+base/StringView.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\WebServer.dir\build.make CMakeFiles/WebServer.dir/base/StringView.cpp.i
+.PHONY : base/StringView.cpp.i
+
+base/StringView.s: base/StringView.cpp.s
+.PHONY : base/StringView.s
+
+# target to generate assembly for a file
+base/StringView.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\WebServer.dir\build.make CMakeFiles/WebServer.dir/base/StringView.cpp.s
+.PHONY : base/StringView.cpp.s
 
 main.obj: main.cpp.obj
 .PHONY : main.obj
@@ -314,15 +386,24 @@ help:
 	@echo ... HttpResponse.obj
 	@echo ... HttpResponse.i
 	@echo ... HttpResponse.s
+	@echo ... Json.obj
+	@echo ... Json.i
+	@echo ... Json.s
 	@echo ... WebServer.obj
 	@echo ... WebServer.i
 	@echo ... WebServer.s
 	@echo ... base/ByteBuffer.obj
 	@echo ... base/ByteBuffer.i
 	@echo ... base/ByteBuffer.s
+	@echo ... base/GenericParser.obj
+	@echo ... base/GenericParser.i
+	@echo ... base/GenericParser.s
 	@echo ... base/String.obj
 	@echo ... base/String.i
 	@echo ... base/String.s
+	@echo ... base/StringView.obj
+	@echo ... base/StringView.i
+	@echo ... base/StringView.s
 	@echo ... main.obj
 	@echo ... main.i
 	@echo ... main.s

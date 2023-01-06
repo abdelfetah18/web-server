@@ -1,3 +1,5 @@
+/*
+
 #include "WebServer.h"
 #pragma comment(lib, "Ws2_32.lib")
 
@@ -16,13 +18,13 @@ void About(HttpRequest* req,HttpResponse* res){
 }
 
 void DynamicPathHandler(HttpRequest* req, HttpResponse* res){
-    String data("<h1>username: </h1>");
+    String data("username: ");
 
     String username;
     req->params.get("username", username);
     data.push(username);
 
-    data.push("<br><h1>ID: </h1>");
+    data.push("<br>id: ");
 
     String id;
     req->params.get("id", id);
@@ -42,3 +44,25 @@ int main()
     server.listen("8080");
     return 0;
 }
+
+
+
+*/
+
+#include <stdio.h>
+
+#include "Json.h"
+
+
+int main(){
+    Json root;
+    Value r;
+    r.number = 12;
+    root.object.set("age", r);
+    Value a;
+    root.object.get("age", a);
+    printf("age: %u\n", a);
+    return 0;
+}
+
+

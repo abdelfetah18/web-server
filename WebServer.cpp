@@ -154,6 +154,62 @@ void WebServer::get(char* path, callback call){
     }
 }
 
+void WebServer::head(char *path, callback call){
+    String key("HEAD:");
+    key.push(path);
+    // register a callback for that path
+    if(is_dynamic_path(path)){
+        DynamicHandler handler;
+        handler.call = call;
+        handler.dynamic_path = key;
+        dynamic_handlers.append(handler);
+    }else{
+        handlers.set( key, call);
+    }
+}
+
+void WebServer::post(char *path, callback call){
+    String key("POST:");
+    key.push(path);
+    // register a callback for that path
+    if(is_dynamic_path(path)){
+        DynamicHandler handler;
+        handler.call = call;
+        handler.dynamic_path = key;
+        dynamic_handlers.append(handler);
+    }else{
+        handlers.set( key, call);
+    }
+}
+
+void WebServer::put(char *path, callback call){
+    String key("PUT:");
+    key.push(path);
+    // register a callback for that path
+    if(is_dynamic_path(path)){
+        DynamicHandler handler;
+        handler.call = call;
+        handler.dynamic_path = key;
+        dynamic_handlers.append(handler);
+    }else{
+        handlers.set( key, call);
+    }
+}
+
+void WebServer::del(char *path, callback call){
+    String key("DELETE:");
+    key.push(path);
+    // register a callback for that path
+    if(is_dynamic_path(path)){
+        DynamicHandler handler;
+        handler.call = call;
+        handler.dynamic_path = key;
+        dynamic_handlers.append(handler);
+    }else{
+        handlers.set( key, call);
+    }
+}
+
 // TODO: improve the algorithm
 bool match_dynamic_path(String static_path,String dynamic_path,HashTable<String,String> &params){
     uint i = 0;
@@ -321,6 +377,7 @@ void WebServer::handle(String key, HttpRequest* req, HttpResponse* res){
             if(match_dynamic_path(key, iterator.node()->value.dynamic_path, req->params)){
                 iterator.node()->value.call(req,res);
                 found = true;
+                break;
             }
             iterator.increment();
         }
@@ -365,14 +422,17 @@ DWORD WINAPI Worker(void* arg){
 
         //printf("recv_length: %d\n[ data ] ==========\n%s\n", SelectedClient.BytesRECV, SelectedClient.DataBuf.buf);
         HttpRequest req(SelectedClient.DataBuf.buf, client);
+        HttpResponse res(client);
+
         int is_valid = req.parse();
 
         printf("\nsocket_id: %d\n", SelectedClient.Socket);
-
         if(is_valid != 0){
             printf("parsing error: %d\n", is_valid);
+            res.status(400);
+            res.send("Bad Request!");
         }else{
-            HttpResponse res(client);
+
 
             String key(req.getMethod());
             key.push(":");

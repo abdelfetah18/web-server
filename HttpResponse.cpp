@@ -113,6 +113,10 @@ void HttpResponse::status(int code){
             control_data.reason_phrase.set("Not Found");
             break;
         }
+        case 400:{
+            control_data.reason_phrase.set("Bad Request");
+            break;
+        }
         default:
             control_data.reason_phrase.set("OK");
     }
