@@ -6,7 +6,12 @@ WSAEVENT EventArray[WSA_MAXIMUM_WAIT_EVENTS];
 SOCKET_INFORMATION Clients[WSA_MAXIMUM_WAIT_EVENTS];
 SOCKET_INFORMATION SelectedClient;
 
-static DWORD WINAPI Worker(void*);
+typedef struct {
+    WebServer* web_server;
+    SOCKET socket;
+} Thread_Params;
+
+static DWORD WINAPI Worker(void* args);
 
 WebServer::WebServer(){ }
 
@@ -70,14 +75,6 @@ void WebServer::listen(const char port[]){
 
     printf("Server is up running on port: %s\n", port);
 
-    if((EventArray[0] = WSACreateEvent()) == WSA_INVALID_EVENT){
-        printf("WSACreateEvent() failed with error %d\n", WSAGetLastError());
-    }
-
-    EventTotal = 1;
-
-    CreateThread(NULL,0,Worker,(void*) this,0,&WORKER_ID);
-
     while(TRUE){
         SOCKET ClientSocket = INVALID_SOCKET;
 
@@ -90,32 +87,11 @@ void WebServer::listen(const char port[]){
             return;
         }
 
-        Clients[EventTotal].Socket = ClientSocket;
-        ZeroMemory(&(Clients[EventTotal].Overlapped), sizeof(WS_OVERLAPPED));
-        Clients[EventTotal].BytesSEND = 0;
-        Clients[EventTotal].BytesRECV = 0;
-        Clients[EventTotal].DataBuf.len = DEFAULT_BUFLEN;
-        Clients[EventTotal].DataBuf.buf = Clients[EventTotal].Buffer;
+        Thread_Params* th_pr = new Thread_Params;
+        th_pr->web_server = this;
+        th_pr->socket = ClientSocket;
 
-        if((Clients[EventTotal].Overlapped.hEvent = EventArray[EventTotal] = WSACreateEvent()) == WSA_INVALID_EVENT){
-            printf("WSACreateEvent() failed with error %d\n", WSAGetLastError());
-        }
-
-        DWORD Flags = 0;
-        ZeroMemory(Clients[EventTotal].DataBuf.buf, Clients[EventTotal].DataBuf.len);
-        if(WSARecv(Clients[EventTotal].Socket, &(Clients[EventTotal].DataBuf), 1, &(Clients[EventTotal].BytesRECV), &Flags, &(Clients[EventTotal].Overlapped), NULL) == SOCKET_ERROR){
-            if(WSAGetLastError() != WSA_IO_PENDING){
-                printf("WSARecv() failed with error %d\n", WSAGetLastError());
-            }
-        }
-
-        EventTotal += 1;
-
-        // Signal the first event in the event array to tell the worker thread to
-        // service an additional event in the event array
-        if(WSASetEvent(EventArray[0]) == FALSE){
-            printf("WSASetEvent() failed with error %d\n", WSAGetLastError());
-        }
+        CreateThread(NULL,0,Worker, th_pr,0, &WORKER_ID);
     }
     return;
 }
@@ -397,63 +373,54 @@ void WebServer::handle(String key, HttpRequest* req, HttpResponse* res){
     }
 }
 
-DWORD WINAPI Worker(void* arg){
-    WebServer* Server = (WebServer*) arg;
-    DWORD Index;
-    DWORD BytesTransferred = 0;
-    DWORD Flags = 0;
-    DWORD RecvBytes = 0, SendBytes = 0;
-    while(TRUE){
-        if((Index =  WSAWaitForMultipleEvents(EventTotal, EventArray, FALSE,  WSA_INFINITE, FALSE)) == WSA_WAIT_FAILED){
-            printf("WSAWaitForMultipleEvents() failed %d\n", WSAGetLastError());
-            return 0;
-        }
+DWORD WINAPI Worker(void* args){
+    Thread_Params* params = (Thread_Params*) args;
+    WebServer* Server = params->web_server;
 
-        // If the event triggered was zero then a connection attempt was made on our listening socket.
-        if((Index - WSA_WAIT_EVENT_0) == 0){
-            WSAResetEvent(EventArray[0]);
-            continue;
-        }
+    printf("\nsocket_id: %d\n", params->socket);
+    char* buffer[DEFAULT_BUFLEN];
+    ZeroMemory( buffer, DEFAULT_BUFLEN);
 
-        SelectedClient = Clients[Index - WSA_WAIT_EVENT_0];
-        WSAResetEvent(EventArray[Index - WSA_WAIT_EVENT_0]);
+    DWORD BytesRECV = 0;
 
-        Client client(Clients[Index - WSA_WAIT_EVENT_0].Socket);
-
-        //printf("recv_length: %d\n[ data ] ==========\n%s\n", SelectedClient.BytesRECV, SelectedClient.DataBuf.buf);
-        HttpRequest req(SelectedClient.DataBuf.buf, client);
-        HttpResponse res(client);
-
-        int is_valid = req.parse();
-
-        printf("\nsocket_id: %d\n", SelectedClient.Socket);
-        if(is_valid != 0){
-            printf("parsing error: %d\n", is_valid);
-            res.status(400);
-            res.send("Bad Request!");
-        }else{
-
-
-            String key(req.getMethod());
-            key.push(":");
-            key.push(req.getPath());
-            key.show();
-            Server->handle(key, &req, &res);
-            printf("\n");
-            /*
-            res.setHeader("Server", "MyServer");
-            res.send("<h1>HelloWorld!</h1>");
-
-             char default_response[] = "HTTP/1.1 200 OK\n\rContent-Length: 20\n\rServer: MyServer\n\rContent-Type: text/html\n\r\n\r<h1>HelloWorld!</h1>";
-
-            // send_a_default_response
-            int iSendResult = send(SelectedClient.Socket, default_response, 104, 0);
-            //printf("Bytes sent: %d\n", iSendResult);
-            closesocket(SelectedClient.Socket);
-            */
-
-            WSACloseEvent(EventArray[Index - WSA_WAIT_EVENT_0]);
-            EventTotal -= 1;
+    if((BytesRECV = ::recv(params->socket, (char*) buffer, DEFAULT_BUFLEN, 0)) == SOCKET_ERROR){
+        if(WSAGetLastError() != WSA_IO_PENDING){
+            printf("recv() failed with error %d\n", WSAGetLastError());
+            return 1;
         }
     }
+
+    Client client(params->socket);
+
+    HttpRequest req((char*) buffer, client);
+    HttpResponse res(client);
+
+    int is_valid = req.parse();
+
+    if(is_valid != 0){
+        printf("parsing error: %d\n", is_valid);
+        res.status(400);
+        res.send("Bad Request!");
+    }else{
+
+
+        String key(req.getMethod());
+        key.push(":");
+        key.push(req.getPath());
+        key.show();
+        Server->handle(key, &req, &res);
+        printf("\n");
+        /*
+        res.setHeader("Server", "MyServer");
+        res.send("<h1>HelloWorld!</h1>");
+
+         char default_response[] = "HTTP/1.1 200 OK\n\rContent-Length: 20\n\rServer: MyServer\n\rContent-Type: text/html\n\r\n\r<h1>HelloWorld!</h1>";
+
+        // send_a_default_response
+        int iSendResult = send(SelectedClient.Socket, default_response, 104, 0);
+        //printf("Bytes sent: %d\n", iSendResult);
+        closesocket(SelectedClient.Socket);
+        */
+    }
+    return 0;
 }

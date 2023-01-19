@@ -45,6 +45,10 @@ public:
         }
     };
 
+    bool is_empty(){
+        return head == nullptr;
+    }
+
     void append(TYPE value){
         if(head != nullptr){
             Bucket* cur = head;

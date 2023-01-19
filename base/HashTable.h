@@ -27,9 +27,9 @@ public:
 
     void show(){
         for(int i=0; i < capacity; i++){
-            printf("\n[ %d ] =======================================\n", i);
-            table[i].show();
-            printf("==============================================\n");
+            if(!table[i].is_empty()){
+                table[i].show();
+            }
         }
     }
 
@@ -70,11 +70,10 @@ private:
         }
 
         void show(){
-            printf("\t");
+            printf("\n");
             key.show();
             printf(" : ");
             value.show();
-            printf("\n");
         }
     };
 

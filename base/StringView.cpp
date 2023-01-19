@@ -8,9 +8,9 @@ uint str_len(char* str){
 }
 
 StringView::StringView(char* str) : m_str(str) {
-    size = str_len(str);
+    m_size = str_len(str);
 }
 
 uint StringView::length(){
-    return size;
+    return m_size;
 }

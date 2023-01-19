@@ -15,7 +15,7 @@ public:
 
 private:
     char* m_str { nullptr };
-    uint size = 0;
+    uint m_size = 0;
 };
 
 #endif

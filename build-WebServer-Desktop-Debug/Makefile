@@ -200,30 +200,6 @@ HttpResponse.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\WebServer.dir\build.make CMakeFiles/WebServer.dir/HttpResponse.cpp.s
 .PHONY : HttpResponse.cpp.s
 
-Json.obj: Json.cpp.obj
-.PHONY : Json.obj
-
-# target to build an object file
-Json.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\WebServer.dir\build.make CMakeFiles/WebServer.dir/Json.cpp.obj
-.PHONY : Json.cpp.obj
-
-Json.i: Json.cpp.i
-.PHONY : Json.i
-
-# target to preprocess a source file
-Json.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\WebServer.dir\build.make CMakeFiles/WebServer.dir/Json.cpp.i
-.PHONY : Json.cpp.i
-
-Json.s: Json.cpp.s
-.PHONY : Json.s
-
-# target to generate assembly for a file
-Json.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\WebServer.dir\build.make CMakeFiles/WebServer.dir/Json.cpp.s
-.PHONY : Json.cpp.s
-
 WebServer.obj: WebServer.cpp.obj
 .PHONY : WebServer.obj
 
@@ -295,6 +271,30 @@ base/GenericParser.s: base/GenericParser.cpp.s
 base/GenericParser.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\WebServer.dir\build.make CMakeFiles/WebServer.dir/base/GenericParser.cpp.s
 .PHONY : base/GenericParser.cpp.s
+
+base/Json.obj: base/Json.cpp.obj
+.PHONY : base/Json.obj
+
+# target to build an object file
+base/Json.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\WebServer.dir\build.make CMakeFiles/WebServer.dir/base/Json.cpp.obj
+.PHONY : base/Json.cpp.obj
+
+base/Json.i: base/Json.cpp.i
+.PHONY : base/Json.i
+
+# target to preprocess a source file
+base/Json.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\WebServer.dir\build.make CMakeFiles/WebServer.dir/base/Json.cpp.i
+.PHONY : base/Json.cpp.i
+
+base/Json.s: base/Json.cpp.s
+.PHONY : base/Json.s
+
+# target to generate assembly for a file
+base/Json.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\WebServer.dir\build.make CMakeFiles/WebServer.dir/base/Json.cpp.s
+.PHONY : base/Json.cpp.s
 
 base/String.obj: base/String.cpp.obj
 .PHONY : base/String.obj
@@ -386,9 +386,6 @@ help:
 	@echo ... HttpResponse.obj
 	@echo ... HttpResponse.i
 	@echo ... HttpResponse.s
-	@echo ... Json.obj
-	@echo ... Json.i
-	@echo ... Json.s
 	@echo ... WebServer.obj
 	@echo ... WebServer.i
 	@echo ... WebServer.s
@@ -398,6 +395,9 @@ help:
 	@echo ... base/GenericParser.obj
 	@echo ... base/GenericParser.i
 	@echo ... base/GenericParser.s
+	@echo ... base/Json.obj
+	@echo ... base/Json.i
+	@echo ... base/Json.s
 	@echo ... base/String.obj
 	@echo ... base/String.i
 	@echo ... base/String.s

@@ -1,4 +1,4 @@
-/*
+
 
 #include "WebServer.h"
 #pragma comment(lib, "Ws2_32.lib")
@@ -47,22 +47,18 @@ int main()
 
 
 
-*/
+/*
 
 #include <stdio.h>
 
-#include "Json.h"
+#include "base/Json.h"
 
 
 int main(){
-    Json root;
-    Value r;
-    r.number = 12;
-    root.object.set("age", r);
-    Value a;
-    root.object.get("age", a);
-    printf("age: %u\n", a);
+    Json::Parser m_parser("{ \"user\" : \"Abdelfetah\" }");
+    m_parser.parse();
+
     return 0;
 }
 
-
+*/

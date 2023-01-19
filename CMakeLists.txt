@@ -7,28 +7,30 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(SOURCES
     main.cpp
-    Json.cpp
     Client.cpp
     WebServer.cpp
     HttpRequest.cpp
     HttpResponse.cpp
-    base/String.cpp
-    base/StringView.cpp
+    base/ByteBuffer.cpp
     base/GenericParser.cpp
-    base/ByteBuffer.cpp)
+    base/Json.cpp
+    base/String.cpp
+    base/StringView.cpp)
 
 set(HEADERS
-    Json.h
     Client.h
     WebServer.h
     HttpRequest.h
     HttpResponse.h
+    base/ByteBuffer.h
+    base/GenericParser.h
+    base/HashTable.h
+    base/Json.h
+    base/LinkedList.h
+    base/RefPointer.h
     base/String.h
     base/StringView.h
-    base/GenericParser.h
-    base/ByteBuffer.h
-    base/HashTable.h
-    base/LinkedList.h)
+    base/Vector.h)
 
 add_executable(WebServer ${SOURCES} ${HEADERS})
 target_link_libraries(WebServer wsock32 ws2_32)

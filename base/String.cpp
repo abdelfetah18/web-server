@@ -201,3 +201,18 @@ bool String::lookup(const char* data){
     }
     return found;
 }
+
+
+int String::parseInt(){
+    int sign = 1;
+    if(str[0] == '-')
+        sign = -1;
+
+    int num_size = 10 * (sign > 0 ? size - 1 : size - 2);
+    int total = 0;
+    for(uint i = sign < 0 ? 1 : 0; i < size; i++){
+        total += num_size * (str[i] - '0');
+        num_size /= 10;
+    }
+    return total * sign;
+}
