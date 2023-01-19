@@ -15,7 +15,8 @@ public:
     Client(SOCKET);
     void send(char*,int);
     void close_connection();
-    int recv();
+    // NOTE: I thinking about making the buffer as property in this class.
+    int recv(char* buffer,unsigned int len);
     char* get_ip();
 private:
     SOCKET _socket;

@@ -378,16 +378,9 @@ DWORD WINAPI Worker(void* args){
     char* buffer[DEFAULT_BUFLEN];
     ZeroMemory( buffer, DEFAULT_BUFLEN);
 
-    DWORD BytesRECV = 0;
-
-    if((BytesRECV = ::recv(m_client, (char*) buffer, DEFAULT_BUFLEN, 0)) == SOCKET_ERROR){
-        if(WSAGetLastError() != WSA_IO_PENDING){
-            printf("recv() failed with error %d\n", WSAGetLastError());
-            return 1;
-        }
-    }
-
     Client client(m_client);
+
+    client.recv((char*) buffer, DEFAULT_BUFLEN);
 
     HttpRequest req((char*) buffer, client);
     HttpResponse res(client);

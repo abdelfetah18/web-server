@@ -13,6 +13,14 @@ void Client::send(char* data,int len){
     close_connection();
 }
 
+int Client::recv(char* buffer,unsigned int len){
+    if((total_bytes_recv = ::recv(_socket, (char*) buffer, len, 0)) == SOCKET_ERROR){
+        printf("recv() failed with error %d\n", WSAGetLastError());
+        return SOCKET_ERROR;
+    }
+    return 0;
+}
+
 char* Client::get_ip(){
     // TODO: create a ip_address property which will initiated in th constructor
     sockaddr name;

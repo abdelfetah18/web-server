@@ -226,6 +226,7 @@ uint Parser::parseObject(JsonObject& obj){
         increment();
         return 0;
     }
+     return 1; // Expected '{'
 }
 
 uint Parser::parseString(String& str){
@@ -240,10 +241,12 @@ uint Parser::parseString(String& str){
         }
         increment();
     }
+    return 1; // Expected '"'
 }
 
 uint Parser::parseEscape(String& str){
     // TODO: parse Escaped Values.
+    return 0;
 }
 
 uint Parser::parseValue(JsonValue& value){
@@ -292,11 +295,12 @@ uint Parser::parseValue(JsonValue& value){
     default:
         break;
     }
+     return 0;
 }
 
 uint Parser::parseBoolean(bool& v){
     if(getCur() == 't'){
-        char* true_str = "true";
+        const char* true_str = "true";
         for(uint i = 0; i < 4; i++){
             if(getCur() != true_str[i]){
                 return 1;
@@ -307,7 +311,7 @@ uint Parser::parseBoolean(bool& v){
         return 0;
     }
     if(getCur() == 'f'){
-        char* false_str = "false";
+        const char* false_str = "false";
         for(uint i = 0; i < 5; i++){
             if(getCur() != false_str[i]){
                 return 1;
@@ -317,11 +321,12 @@ uint Parser::parseBoolean(bool& v){
         v = false;
         return 0;
     }
+     return 1; // Expected 'f' || 't'
 }
 
 uint Parser::parseNull(JsonValue& v){
     if(getCur() == 'n'){
-        char* null_str = "null";
+        const char* null_str = "null";
         for(uint i = 0; i < 4; i++){
             if(getCur() != null_str[i]){
                 return 1;
@@ -331,6 +336,7 @@ uint Parser::parseNull(JsonValue& v){
         v.m_value.null = nullptr;
         return 0;
     }
+     return 1; // Expected 'n'
 }
 
 uint Parser::parseNumber(Number& num){
@@ -364,6 +370,7 @@ uint Parser::parseArray(Array& arr){
         }
         increment();
     }
+     return 1; // Expected '['
 }
 
 uint Parser::parse(){
@@ -371,4 +378,5 @@ uint Parser::parse(){
         parseObject(m_object);
     }
     m_object.show();
+    return 0;
 }

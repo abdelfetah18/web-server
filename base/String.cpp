@@ -138,7 +138,7 @@ void String::push(String c){
     push(c.get(),c.length());
 }
 
-void String::set(char* data){
+void String::set(const char* data){
     uint len = strlen(data);
     if(len > capacity){
         capacity = ((len / 8) + 1) * 8;

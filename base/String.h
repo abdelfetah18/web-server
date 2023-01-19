@@ -15,7 +15,7 @@ public:
     void push(char[],int);
     void push(char);
     void push(String);
-    void set(char[]);
+    void set(const char[]);
     char* get();
     uint length();
     void clear();
