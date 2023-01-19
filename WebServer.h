@@ -16,14 +16,6 @@
 #define KBYTE 1024
 #define DEFAULT_BUFLEN KBYTE*8
 
-typedef struct _SOCKET_INFORMATION {
-   CHAR Buffer[DEFAULT_BUFLEN];
-   WSABUF DataBuf;
-   SOCKET Socket;
-   WSAOVERLAPPED Overlapped;
-   DWORD BytesSEND;
-   DWORD BytesRECV;
-} SOCKET_INFORMATION, * LPSOCKET_INFORMATION;
 
 class WebServer {
 private:
@@ -41,15 +33,15 @@ public:
     WebServer();
     ~WebServer();
 
-    void use_static_path(char*);
+    void use_static_path(const char*);
     void listen(const char port[]);
 
     // HttpRequest Methods
-    void get(char* path, callback);
-    void head(char* path, callback);
-    void post(char* path, callback);
-    void put(char* path, callback);
-    void del(char* path, callback);
+    void get(const char* path, callback);
+    void head(const char* path, callback);
+    void post(const char* path, callback);
+    void put(const char* path, callback);
+    void del(const char* path, callback);
     /*
         Method Name  | Description Section
        ------------------------------------------------------------------------------------------------------------------

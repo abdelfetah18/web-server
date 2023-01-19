@@ -1,14 +1,9 @@
 #include "WebServer.h"
 #include "Client.h"
 
-DWORD EventTotal = 0;
-WSAEVENT EventArray[WSA_MAXIMUM_WAIT_EVENTS];
-SOCKET_INFORMATION Clients[WSA_MAXIMUM_WAIT_EVENTS];
-SOCKET_INFORMATION SelectedClient;
-
 typedef struct {
     WebServer* web_server;
-    SOCKET socket;
+    SOCKET client;
 } Thread_Params;
 
 static DWORD WINAPI Worker(void* args);
@@ -89,7 +84,7 @@ void WebServer::listen(const char port[]){
 
         Thread_Params* th_pr = new Thread_Params;
         th_pr->web_server = this;
-        th_pr->socket = ClientSocket;
+        th_pr->client = ClientSocket;
 
         CreateThread(NULL,0,Worker, th_pr,0, &WORKER_ID);
     }
@@ -100,12 +95,12 @@ WebServer::~WebServer(){
     return;
 }
 
-void WebServer::use_static_path(char* path){
+void WebServer::use_static_path(const char* path){
     static_paths.append(String(path));
 }
 
 // a dynamic path is a path that start with column character ':' to indicate its can be changable.
-bool is_dynamic_path(char* path){
+bool is_dynamic_path(const char* path){
     uint index = 0;
     while(path[index] != '\0'){
         if(path[index] == '/' && path[index+1] == ':'){
@@ -116,7 +111,7 @@ bool is_dynamic_path(char* path){
     return false;
 }
 
-void WebServer::get(char* path, callback call){
+void WebServer::get(const char* path, callback call){
     String key("GET:");
     key.push(path);
     // register a callback for that path
@@ -130,7 +125,7 @@ void WebServer::get(char* path, callback call){
     }
 }
 
-void WebServer::head(char *path, callback call){
+void WebServer::head(const char *path, callback call){
     String key("HEAD:");
     key.push(path);
     // register a callback for that path
@@ -144,7 +139,7 @@ void WebServer::head(char *path, callback call){
     }
 }
 
-void WebServer::post(char *path, callback call){
+void WebServer::post(const char *path, callback call){
     String key("POST:");
     key.push(path);
     // register a callback for that path
@@ -158,7 +153,7 @@ void WebServer::post(char *path, callback call){
     }
 }
 
-void WebServer::put(char *path, callback call){
+void WebServer::put(const char *path, callback call){
     String key("PUT:");
     key.push(path);
     // register a callback for that path
@@ -172,7 +167,7 @@ void WebServer::put(char *path, callback call){
     }
 }
 
-void WebServer::del(char *path, callback call){
+void WebServer::del(const char *path, callback call){
     String key("DELETE:");
     key.push(path);
     // register a callback for that path
@@ -251,6 +246,7 @@ void WebServer::handle(String key, HttpRequest* req, HttpResponse* res){
     String path(str);
 
     bool found = false;
+
     LinkedListIterator<LinkedList<String>::Bucket> iterator(static_paths.get_head());
     while(!iterator.is_end()){
         if(path.startWith(iterator.node()->value)){
@@ -259,7 +255,8 @@ void WebServer::handle(String key, HttpRequest* req, HttpResponse* res){
         }
         iterator.increment();
     }
-    if(found){
+
+    if(found && key.startWith("GET")){
         // readfiles and send response
         // Open a handle to the file
          HANDLE hFile = CreateFile(path.get(), GENERIC_READ,0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
@@ -376,21 +373,21 @@ void WebServer::handle(String key, HttpRequest* req, HttpResponse* res){
 DWORD WINAPI Worker(void* args){
     Thread_Params* params = (Thread_Params*) args;
     WebServer* Server = params->web_server;
-
-    printf("\nsocket_id: %d\n", params->socket);
+    SOCKET m_client = params->client;
+    printf("\nsocket_id: %d\n", m_client);
     char* buffer[DEFAULT_BUFLEN];
     ZeroMemory( buffer, DEFAULT_BUFLEN);
 
     DWORD BytesRECV = 0;
 
-    if((BytesRECV = ::recv(params->socket, (char*) buffer, DEFAULT_BUFLEN, 0)) == SOCKET_ERROR){
+    if((BytesRECV = ::recv(m_client, (char*) buffer, DEFAULT_BUFLEN, 0)) == SOCKET_ERROR){
         if(WSAGetLastError() != WSA_IO_PENDING){
             printf("recv() failed with error %d\n", WSAGetLastError());
             return 1;
         }
     }
 
-    Client client(params->socket);
+    Client client(m_client);
 
     HttpRequest req((char*) buffer, client);
     HttpResponse res(client);
@@ -410,17 +407,6 @@ DWORD WINAPI Worker(void* args){
         key.show();
         Server->handle(key, &req, &res);
         printf("\n");
-        /*
-        res.setHeader("Server", "MyServer");
-        res.send("<h1>HelloWorld!</h1>");
-
-         char default_response[] = "HTTP/1.1 200 OK\n\rContent-Length: 20\n\rServer: MyServer\n\rContent-Type: text/html\n\r\n\r<h1>HelloWorld!</h1>";
-
-        // send_a_default_response
-        int iSendResult = send(SelectedClient.Socket, default_response, 104, 0);
-        //printf("Bytes sent: %d\n", iSendResult);
-        closesocket(SelectedClient.Socket);
-        */
     }
     return 0;
 }

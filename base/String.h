@@ -5,7 +5,7 @@ typedef unsigned int uint;
 
 class String{
 public:
-    String(char[]);
+    String(const char[]);
     String();
     String(const String&);
     ~String();

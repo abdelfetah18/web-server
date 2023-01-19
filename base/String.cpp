@@ -18,13 +18,15 @@ int strlen(const char* data){
 }
 
 void copyFromTo(char* src,char* dst,int size){
-    for(uint i=0; i < size; i++){
-        dst[i] = src[i];
+    if(src != nullptr && dst != nullptr){
+        for(uint i=0; i < size; i++){
+            dst[i] = src[i];
+        }
+        dst[size] = '\0';
     }
-    dst[size] = '\0';
 }
 
-String::String(char data[]){
+String::String(const char data[]){
     uint len = strlen(data);
     if(len >= capacity){
         capacity = ((len / 8) + 1) * 8;
@@ -34,7 +36,7 @@ String::String(char data[]){
     for(uint i = 0; i < capacity; i++){
         str[i] = '\0';
     }
-    copyFromTo( data, str, len);
+    copyFromTo((char*) data, str, len);
     size = len;
 }
 
