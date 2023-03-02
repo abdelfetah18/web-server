@@ -1,0 +1,3 @@
+C:/Users/amazon/Desktop/WebServer/output/CMakeFiles/WebServer.dir
+C:/Users/amazon/Desktop/WebServer/output/CMakeFiles/edit_cache.dir
+C:/Users/amazon/Desktop/WebServer/output/CMakeFiles/rebuild_cache.dir
