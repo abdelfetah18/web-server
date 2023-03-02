@@ -1,0 +1,3 @@
+"C:\Program Files\CMake\bin\cmake.exe" -E rm -f CMakeFiles\WebServer.dir/objects.a
+C:\PROGRA~1\CODEBL~1\MinGW\bin\ar.exe qc CMakeFiles\WebServer.dir/objects.a @CMakeFiles\WebServer.dir\objects1.rsp
+C:\PROGRA~1\CODEBL~1\MinGW\bin\G__~1.EXE -g -Wl,--whole-archive CMakeFiles\WebServer.dir/objects.a -Wl,--no-whole-archive -o WebServer.exe -Wl,--out-implib,libWebServer.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\WebServer.dir\linklibs.rsp

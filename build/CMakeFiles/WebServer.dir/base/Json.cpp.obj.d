@@ -1,0 +1,24 @@
+CMakeFiles/WebServer.dir/base/Json.cpp.obj: \
+ C:\Users\amazon\Desktop\WebServer\base\Json.cpp \
+ C:\Users\amazon\Desktop\WebServer\base\Json.h \
+ C:\Users\amazon\Desktop\WebServer\base\ByteBuffer.h \
+ C:/PROGRA~1/CODEBL~1/MinGW/x86_64-w64-mingw32/include/stdio.h \
+ C:/PROGRA~1/CODEBL~1/MinGW/x86_64-w64-mingw32/include/crtdefs.h \
+ C:/PROGRA~1/CODEBL~1/MinGW/x86_64-w64-mingw32/include/_mingw.h \
+ C:/PROGRA~1/CODEBL~1/MinGW/x86_64-w64-mingw32/include/_mingw_mac.h \
+ C:/PROGRA~1/CODEBL~1/MinGW/x86_64-w64-mingw32/include/_mingw_secapi.h \
+ C:/PROGRA~1/CODEBL~1/MinGW/x86_64-w64-mingw32/include/vadefs.h \
+ C:/PROGRA~1/CODEBL~1/MinGW/x86_64-w64-mingw32/include/sdks/_mingw_directx.h \
+ C:/PROGRA~1/CODEBL~1/MinGW/x86_64-w64-mingw32/include/sdks/_mingw_ddk.h \
+ C:/PROGRA~1/CODEBL~1/MinGW/x86_64-w64-mingw32/include/_mingw_print_push.h \
+ C:/PROGRA~1/CODEBL~1/MinGW/x86_64-w64-mingw32/include/_mingw_off_t.h \
+ C:/PROGRA~1/CODEBL~1/MinGW/x86_64-w64-mingw32/include/swprintf.inl \
+ C:/PROGRA~1/CODEBL~1/MinGW/x86_64-w64-mingw32/include/sec_api/stdio_s.h \
+ C:/PROGRA~1/CODEBL~1/MinGW/x86_64-w64-mingw32/include/_mingw_print_pop.h \
+ C:\Users\amazon\Desktop\WebServer\base\HashTable.h \
+ C:\Users\amazon\Desktop\WebServer\base\LinkedList.h \
+ C:\Users\amazon\Desktop\WebServer\base\String.h \
+ C:\Users\amazon\Desktop\WebServer\base\StringView.h \
+ C:\Users\amazon\Desktop\WebServer\base\RefPointer.h \
+ C:\Users\amazon\Desktop\WebServer\base\Vector.h \
+ C:\Users\amazon\Desktop\WebServer\base\GenericParser.h

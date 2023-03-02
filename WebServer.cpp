@@ -5,7 +5,7 @@
 
 typedef struct {
     WebServer* web_server;
-    Socket* client;
+    int client;
 } Thread_Params;
 
 #ifdef _WIN32
@@ -16,26 +16,25 @@ WebServer::WebServer(){ }
 
 void WebServer::listen(const char port[]){
 
-    Socket* my_socket = new Socket(port);
+    Socket my_socket(port);
 
     // Create a SOCKET for the server to listen for client connections
-    my_socket->socket();
+    my_socket.socket();
     
     // Setup the TCP listening socket
-    my_socket->bind();
+    my_socket.bind();
 
     // Listen
-    my_socket->listen();
+    my_socket.listen();
 
     while(true){
         // Accept connection
-        int _client = my_socket->accept();
-        Socket* client_socket = new Socket(_client);
-        printf("client: %d\n", _client);
+        int _client = my_socket.accept();
+
         // Create thread for each connection
         Thread_Params* th_pr = new Thread_Params;
         th_pr->web_server = this;
-        th_pr->client = client_socket;
+        th_pr->client = _client;
 
         #ifdef _WIN32
         CreateThread( NULL, 0, Worker, th_pr,0, &WORKER_ID);
@@ -326,12 +325,12 @@ void WebServer::handle(String key, HttpRequest* req, HttpResponse* res){
 DWORD WINAPI Worker(void* args){
     Thread_Params* params = (Thread_Params*) args;
     WebServer* Server = params->web_server;
-    Socket* m_client = params->client;
-    printf("\nsocket_id: %d\n", m_client);
+    Socket m_client(params->client);
+    
     char* buffer[DEFAULT_BUFLEN];
     ZeroMemory( buffer, DEFAULT_BUFLEN);
 
-    Client client(m_client);
+    Client client(&m_client);
 
     client.recv((char*) buffer, DEFAULT_BUFLEN);
 
@@ -345,8 +344,6 @@ DWORD WINAPI Worker(void* args){
         res.status(400);
         res.send("Bad Request!");
     }else{
-
-
         String key(req.getMethod());
         key.push(":");
         key.push(req.getPath());
@@ -354,5 +351,8 @@ DWORD WINAPI Worker(void* args){
         Server->handle(key, &req, &res);
         printf("\n");
     }
+
+    delete params;
+
     return 0;
 }
