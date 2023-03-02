@@ -1,35 +1,33 @@
 #include "Client.h"
 
 // FIXME: here i assume that the socket already connected, and i think this is the wrong way to do it.
-Client::Client(SOCKET s):_socket(s),is_connected(true){ };
+Client::Client(Socket* s):m_socket(s),is_connected(true){ };
 
 void Client::close_connection(){
     is_connected = false;
-    closesocket(_socket);
+    
+    // FIXME: implement a close_socket in the Socket class
 }
 
 void Client::send(char* data,int len){
-    int iSendResult = ::send(_socket, data, len, 0);
+    m_socket->send(data, len);
     close_connection();
 }
 
 int Client::recv(char* buffer,unsigned int len){
-    if((total_bytes_recv = ::recv(_socket, (char*) buffer, len, 0)) == SOCKET_ERROR){
-        printf("recv() failed with error %d\n", WSAGetLastError());
-        return SOCKET_ERROR;
-    }
+    m_socket->recv(buffer, len);
     return 0;
 }
 
 char* Client::get_ip(){
     // TODO: create a ip_address property which will initiated in th constructor
-    sockaddr name;
+    /*sockaddr name;
     ZeroMemory(&name, sizeof(sockaddr));
     int namelen = sizeof(sockaddr);
-    int is_valid = getpeername(_socket, &name,&namelen);
+    int is_valid = getpeername(m_socket, &name,&namelen);
     if(is_valid == SOCKET_ERROR)
         printf("error_code: %d\n", WSAGetLastError());
-
+    */
 
     // FIXME: find a way to get a port from struct sockaddr .sa_data member
     /*

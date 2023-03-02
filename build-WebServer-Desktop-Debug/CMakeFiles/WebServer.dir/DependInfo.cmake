@@ -11,6 +11,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "C:/Users/amazon/Desktop/WebServer/Client.cpp" "CMakeFiles/WebServer.dir/Client.cpp.obj" "gcc" "CMakeFiles/WebServer.dir/Client.cpp.obj.d"
   "C:/Users/amazon/Desktop/WebServer/HttpRequest.cpp" "CMakeFiles/WebServer.dir/HttpRequest.cpp.obj" "gcc" "CMakeFiles/WebServer.dir/HttpRequest.cpp.obj.d"
   "C:/Users/amazon/Desktop/WebServer/HttpResponse.cpp" "CMakeFiles/WebServer.dir/HttpResponse.cpp.obj" "gcc" "CMakeFiles/WebServer.dir/HttpResponse.cpp.obj.d"
+  "C:/Users/amazon/Desktop/WebServer/Socket.cpp" "CMakeFiles/WebServer.dir/Socket.cpp.obj" "gcc" "CMakeFiles/WebServer.dir/Socket.cpp.obj.d"
   "C:/Users/amazon/Desktop/WebServer/WebServer.cpp" "CMakeFiles/WebServer.dir/WebServer.cpp.obj" "gcc" "CMakeFiles/WebServer.dir/WebServer.cpp.obj.d"
   "C:/Users/amazon/Desktop/WebServer/base/ByteBuffer.cpp" "CMakeFiles/WebServer.dir/base/ByteBuffer.cpp.obj" "gcc" "CMakeFiles/WebServer.dir/base/ByteBuffer.cpp.obj.d"
   "C:/Users/amazon/Desktop/WebServer/base/GenericParser.cpp" "CMakeFiles/WebServer.dir/base/GenericParser.cpp.obj" "gcc" "CMakeFiles/WebServer.dir/base/GenericParser.cpp.obj.d"

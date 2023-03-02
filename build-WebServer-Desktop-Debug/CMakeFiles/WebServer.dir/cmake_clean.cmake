@@ -5,6 +5,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/WebServer.dir/HttpRequest.cpp.obj.d"
   "CMakeFiles/WebServer.dir/HttpResponse.cpp.obj"
   "CMakeFiles/WebServer.dir/HttpResponse.cpp.obj.d"
+  "CMakeFiles/WebServer.dir/Socket.cpp.obj"
+  "CMakeFiles/WebServer.dir/Socket.cpp.obj.d"
   "CMakeFiles/WebServer.dir/WebServer.cpp.obj"
   "CMakeFiles/WebServer.dir/WebServer.cpp.obj.d"
   "CMakeFiles/WebServer.dir/base/ByteBuffer.cpp.obj"

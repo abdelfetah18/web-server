@@ -1,6 +1,8 @@
 #ifndef REF_POINTER_HEADER
 #define REF_POINTER_HEADER
 
+typedef unsigned int uint;
+
 template<typename T>
 class RefPointer {
   public:
@@ -11,7 +13,6 @@ class RefPointer {
   }
 
   RefPointer(RefPointer& object){
-    printf("Copy\n");
     *(object.ref) += 1;
     ref = object.ref;
   }
@@ -24,11 +25,17 @@ class RefPointer {
     return pointer;
   }
 
+  // FIXME: Allow RefPointer to be initialized with nullptr.
+  /*void operator = (T* p){
+      pointer = p;
+  }*/
+
   ~RefPointer(){
     *ref -= 1;
     if(*ref == 0)
       delete(pointer);
   }
+  T* ptr(){ return pointer;}
   private:
   T* pointer;
   uint* ref = nullptr;

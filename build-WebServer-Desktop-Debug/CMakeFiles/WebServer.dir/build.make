@@ -138,10 +138,24 @@ CMakeFiles/WebServer.dir/HttpResponse.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/WebServer.dir/HttpResponse.cpp.s"
 	C:\Qt\Qt5.12.12\Tools\mingw730_64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\amazon\Desktop\WebServer\HttpResponse.cpp -o CMakeFiles\WebServer.dir\HttpResponse.cpp.s
 
+CMakeFiles/WebServer.dir/Socket.cpp.obj: CMakeFiles/WebServer.dir/flags.make
+CMakeFiles/WebServer.dir/Socket.cpp.obj: C:/Users/amazon/Desktop/WebServer/Socket.cpp
+CMakeFiles/WebServer.dir/Socket.cpp.obj: CMakeFiles/WebServer.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\amazon\Desktop\WebServer\build-WebServer-Desktop-Debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/WebServer.dir/Socket.cpp.obj"
+	C:\Qt\Qt5.12.12\Tools\mingw730_64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/WebServer.dir/Socket.cpp.obj -MF CMakeFiles\WebServer.dir\Socket.cpp.obj.d -o CMakeFiles\WebServer.dir\Socket.cpp.obj -c C:\Users\amazon\Desktop\WebServer\Socket.cpp
+
+CMakeFiles/WebServer.dir/Socket.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/WebServer.dir/Socket.cpp.i"
+	C:\Qt\Qt5.12.12\Tools\mingw730_64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\amazon\Desktop\WebServer\Socket.cpp > CMakeFiles\WebServer.dir\Socket.cpp.i
+
+CMakeFiles/WebServer.dir/Socket.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/WebServer.dir/Socket.cpp.s"
+	C:\Qt\Qt5.12.12\Tools\mingw730_64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\amazon\Desktop\WebServer\Socket.cpp -o CMakeFiles\WebServer.dir\Socket.cpp.s
+
 CMakeFiles/WebServer.dir/base/ByteBuffer.cpp.obj: CMakeFiles/WebServer.dir/flags.make
 CMakeFiles/WebServer.dir/base/ByteBuffer.cpp.obj: C:/Users/amazon/Desktop/WebServer/base/ByteBuffer.cpp
 CMakeFiles/WebServer.dir/base/ByteBuffer.cpp.obj: CMakeFiles/WebServer.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\amazon\Desktop\WebServer\build-WebServer-Desktop-Debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/WebServer.dir/base/ByteBuffer.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\amazon\Desktop\WebServer\build-WebServer-Desktop-Debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/WebServer.dir/base/ByteBuffer.cpp.obj"
 	C:\Qt\Qt5.12.12\Tools\mingw730_64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/WebServer.dir/base/ByteBuffer.cpp.obj -MF CMakeFiles\WebServer.dir\base\ByteBuffer.cpp.obj.d -o CMakeFiles\WebServer.dir\base\ByteBuffer.cpp.obj -c C:\Users\amazon\Desktop\WebServer\base\ByteBuffer.cpp
 
 CMakeFiles/WebServer.dir/base/ByteBuffer.cpp.i: cmake_force
@@ -155,7 +169,7 @@ CMakeFiles/WebServer.dir/base/ByteBuffer.cpp.s: cmake_force
 CMakeFiles/WebServer.dir/base/GenericParser.cpp.obj: CMakeFiles/WebServer.dir/flags.make
 CMakeFiles/WebServer.dir/base/GenericParser.cpp.obj: C:/Users/amazon/Desktop/WebServer/base/GenericParser.cpp
 CMakeFiles/WebServer.dir/base/GenericParser.cpp.obj: CMakeFiles/WebServer.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\amazon\Desktop\WebServer\build-WebServer-Desktop-Debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/WebServer.dir/base/GenericParser.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\amazon\Desktop\WebServer\build-WebServer-Desktop-Debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/WebServer.dir/base/GenericParser.cpp.obj"
 	C:\Qt\Qt5.12.12\Tools\mingw730_64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/WebServer.dir/base/GenericParser.cpp.obj -MF CMakeFiles\WebServer.dir\base\GenericParser.cpp.obj.d -o CMakeFiles\WebServer.dir\base\GenericParser.cpp.obj -c C:\Users\amazon\Desktop\WebServer\base\GenericParser.cpp
 
 CMakeFiles/WebServer.dir/base/GenericParser.cpp.i: cmake_force
@@ -169,7 +183,7 @@ CMakeFiles/WebServer.dir/base/GenericParser.cpp.s: cmake_force
 CMakeFiles/WebServer.dir/base/Json.cpp.obj: CMakeFiles/WebServer.dir/flags.make
 CMakeFiles/WebServer.dir/base/Json.cpp.obj: C:/Users/amazon/Desktop/WebServer/base/Json.cpp
 CMakeFiles/WebServer.dir/base/Json.cpp.obj: CMakeFiles/WebServer.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\amazon\Desktop\WebServer\build-WebServer-Desktop-Debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/WebServer.dir/base/Json.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\amazon\Desktop\WebServer\build-WebServer-Desktop-Debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/WebServer.dir/base/Json.cpp.obj"
 	C:\Qt\Qt5.12.12\Tools\mingw730_64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/WebServer.dir/base/Json.cpp.obj -MF CMakeFiles\WebServer.dir\base\Json.cpp.obj.d -o CMakeFiles\WebServer.dir\base\Json.cpp.obj -c C:\Users\amazon\Desktop\WebServer\base\Json.cpp
 
 CMakeFiles/WebServer.dir/base/Json.cpp.i: cmake_force
@@ -183,7 +197,7 @@ CMakeFiles/WebServer.dir/base/Json.cpp.s: cmake_force
 CMakeFiles/WebServer.dir/base/String.cpp.obj: CMakeFiles/WebServer.dir/flags.make
 CMakeFiles/WebServer.dir/base/String.cpp.obj: C:/Users/amazon/Desktop/WebServer/base/String.cpp
 CMakeFiles/WebServer.dir/base/String.cpp.obj: CMakeFiles/WebServer.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\amazon\Desktop\WebServer\build-WebServer-Desktop-Debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/WebServer.dir/base/String.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\amazon\Desktop\WebServer\build-WebServer-Desktop-Debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/WebServer.dir/base/String.cpp.obj"
 	C:\Qt\Qt5.12.12\Tools\mingw730_64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/WebServer.dir/base/String.cpp.obj -MF CMakeFiles\WebServer.dir\base\String.cpp.obj.d -o CMakeFiles\WebServer.dir\base\String.cpp.obj -c C:\Users\amazon\Desktop\WebServer\base\String.cpp
 
 CMakeFiles/WebServer.dir/base/String.cpp.i: cmake_force
@@ -197,7 +211,7 @@ CMakeFiles/WebServer.dir/base/String.cpp.s: cmake_force
 CMakeFiles/WebServer.dir/base/StringView.cpp.obj: CMakeFiles/WebServer.dir/flags.make
 CMakeFiles/WebServer.dir/base/StringView.cpp.obj: C:/Users/amazon/Desktop/WebServer/base/StringView.cpp
 CMakeFiles/WebServer.dir/base/StringView.cpp.obj: CMakeFiles/WebServer.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\amazon\Desktop\WebServer\build-WebServer-Desktop-Debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/WebServer.dir/base/StringView.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\amazon\Desktop\WebServer\build-WebServer-Desktop-Debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/WebServer.dir/base/StringView.cpp.obj"
 	C:\Qt\Qt5.12.12\Tools\mingw730_64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/WebServer.dir/base/StringView.cpp.obj -MF CMakeFiles\WebServer.dir\base\StringView.cpp.obj.d -o CMakeFiles\WebServer.dir\base\StringView.cpp.obj -c C:\Users\amazon\Desktop\WebServer\base\StringView.cpp
 
 CMakeFiles/WebServer.dir/base/StringView.cpp.i: cmake_force
@@ -215,6 +229,7 @@ WebServer_OBJECTS = \
 "CMakeFiles/WebServer.dir/WebServer.cpp.obj" \
 "CMakeFiles/WebServer.dir/HttpRequest.cpp.obj" \
 "CMakeFiles/WebServer.dir/HttpResponse.cpp.obj" \
+"CMakeFiles/WebServer.dir/Socket.cpp.obj" \
 "CMakeFiles/WebServer.dir/base/ByteBuffer.cpp.obj" \
 "CMakeFiles/WebServer.dir/base/GenericParser.cpp.obj" \
 "CMakeFiles/WebServer.dir/base/Json.cpp.obj" \
@@ -229,6 +244,7 @@ WebServer.exe: CMakeFiles/WebServer.dir/Client.cpp.obj
 WebServer.exe: CMakeFiles/WebServer.dir/WebServer.cpp.obj
 WebServer.exe: CMakeFiles/WebServer.dir/HttpRequest.cpp.obj
 WebServer.exe: CMakeFiles/WebServer.dir/HttpResponse.cpp.obj
+WebServer.exe: CMakeFiles/WebServer.dir/Socket.cpp.obj
 WebServer.exe: CMakeFiles/WebServer.dir/base/ByteBuffer.cpp.obj
 WebServer.exe: CMakeFiles/WebServer.dir/base/GenericParser.cpp.obj
 WebServer.exe: CMakeFiles/WebServer.dir/base/Json.cpp.obj
@@ -238,7 +254,7 @@ WebServer.exe: CMakeFiles/WebServer.dir/build.make
 WebServer.exe: CMakeFiles/WebServer.dir/linklibs.rsp
 WebServer.exe: CMakeFiles/WebServer.dir/objects1.rsp
 WebServer.exe: CMakeFiles/WebServer.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=C:\Users\amazon\Desktop\WebServer\build-WebServer-Desktop-Debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Linking CXX executable WebServer.exe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=C:\Users\amazon\Desktop\WebServer\build-WebServer-Desktop-Debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Linking CXX executable WebServer.exe"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles\WebServer.dir\link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

@@ -200,6 +200,30 @@ HttpResponse.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\WebServer.dir\build.make CMakeFiles/WebServer.dir/HttpResponse.cpp.s
 .PHONY : HttpResponse.cpp.s
 
+Socket.obj: Socket.cpp.obj
+.PHONY : Socket.obj
+
+# target to build an object file
+Socket.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\WebServer.dir\build.make CMakeFiles/WebServer.dir/Socket.cpp.obj
+.PHONY : Socket.cpp.obj
+
+Socket.i: Socket.cpp.i
+.PHONY : Socket.i
+
+# target to preprocess a source file
+Socket.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\WebServer.dir\build.make CMakeFiles/WebServer.dir/Socket.cpp.i
+.PHONY : Socket.cpp.i
+
+Socket.s: Socket.cpp.s
+.PHONY : Socket.s
+
+# target to generate assembly for a file
+Socket.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\WebServer.dir\build.make CMakeFiles/WebServer.dir/Socket.cpp.s
+.PHONY : Socket.cpp.s
+
 WebServer.obj: WebServer.cpp.obj
 .PHONY : WebServer.obj
 
@@ -386,6 +410,9 @@ help:
 	@echo ... HttpResponse.obj
 	@echo ... HttpResponse.i
 	@echo ... HttpResponse.s
+	@echo ... Socket.obj
+	@echo ... Socket.i
+	@echo ... Socket.s
 	@echo ... WebServer.obj
 	@echo ... WebServer.i
 	@echo ... WebServer.s

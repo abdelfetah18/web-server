@@ -1,92 +1,45 @@
 #include "WebServer.h"
 #include "Client.h"
 
+#include "Socket.h"
+
 typedef struct {
     WebServer* web_server;
-    SOCKET client;
+    Socket* client;
 } Thread_Params;
 
+#ifdef _WIN32
 static DWORD WINAPI Worker(void* args);
+#endif
 
 WebServer::WebServer(){ }
 
 void WebServer::listen(const char port[]){
-    int iResult;
-    WSADATA wsaData;
 
-    // Initialize Winsock
-    iResult = WSAStartup(MAKEWORD(2,2), &wsaData);
-    if (iResult != 0) {
-        printf("WSAStartup failed: %d\n", iResult);
-        return;
-    }
+    Socket* my_socket = new Socket(port);
 
-    struct addrinfo *result = NULL, *ptr = NULL, hints;
-
-    ZeroMemory(&hints, sizeof (hints));
-    hints.ai_family = AF_INET;
-    hints.ai_socktype = SOCK_STREAM;
-    hints.ai_protocol = IPPROTO_TCP;
-    hints.ai_flags = AI_PASSIVE;
-
-    // Resolve the local address and port to be used by the server
-    iResult = getaddrinfo(NULL, port, &hints, &result);
-    if (iResult != 0) {
-        printf("getaddrinfo failed: %d\n", iResult);
-        WSACleanup();
-        return;
-    }
-
-    SOCKET ListenSocket = INVALID_SOCKET;
     // Create a SOCKET for the server to listen for client connections
-
-    ListenSocket = socket(result->ai_family, result->ai_socktype, result->ai_protocol);
-
-    if (ListenSocket == INVALID_SOCKET) {
-        printf("Error at socket(): %ld\n", WSAGetLastError());
-        freeaddrinfo(result);
-        WSACleanup();
-        return;
-    }
-
+    my_socket->socket();
+    
     // Setup the TCP listening socket
-    iResult = bind( ListenSocket, result->ai_addr, (int)result->ai_addrlen);
-    if (iResult == SOCKET_ERROR) {
-        printf("bind failed with error: %d\n", WSAGetLastError());
-        freeaddrinfo(result);
-        closesocket(ListenSocket);
-        WSACleanup();
-        return;
-    }
+    my_socket->bind();
 
-    freeaddrinfo(result);
+    // Listen
+    my_socket->listen();
 
-    if (::listen( ListenSocket, SOMAXCONN ) == SOCKET_ERROR ) {
-        printf( "Listen failed with error: %ld\n", WSAGetLastError() );
-        closesocket(ListenSocket);
-        WSACleanup();
-        return;
-    }
-
-    printf("Server is up running on port: %s\n", port);
-
-    while(TRUE){
-        SOCKET ClientSocket = INVALID_SOCKET;
-
-        // Accept a client socket
-        ClientSocket = accept(ListenSocket, NULL, NULL);
-        if (ClientSocket == INVALID_SOCKET) {
-            printf("accept failed: %d\n", WSAGetLastError());
-            closesocket(ListenSocket);
-            WSACleanup();
-            return;
-        }
-
+    while(true){
+        // Accept connection
+        int _client = my_socket->accept();
+        Socket* client_socket = new Socket(_client);
+        printf("client: %d\n", _client);
+        // Create thread for each connection
         Thread_Params* th_pr = new Thread_Params;
         th_pr->web_server = this;
-        th_pr->client = ClientSocket;
+        th_pr->client = client_socket;
 
-        CreateThread(NULL,0,Worker, th_pr,0, &WORKER_ID);
+        #ifdef _WIN32
+        CreateThread( NULL, 0, Worker, th_pr,0, &WORKER_ID);
+        #endif
     }
     return;
 }
@@ -259,16 +212,16 @@ void WebServer::handle(String key, HttpRequest* req, HttpResponse* res){
     if(found && key.startWith("GET")){
         // readfiles and send response
         // Open a handle to the file
-         HANDLE hFile = CreateFile(path.get(), GENERIC_READ,0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+        HANDLE hFile = CreateFile(path.get(), GENERIC_READ,0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
 
-         if (hFile == INVALID_HANDLE_VALUE) {
+        if (hFile == INVALID_HANDLE_VALUE) {
              printf("\nINVALID_HANDLE_VALUE %d\n", GetLastError());
            // An error occurred
              res->status(404);
              res->setHeader("Server","abdelfetah-dev");
              res->send("<h1>404 Not Found!</h1>");
              return;
-         }
+        }
 
          // Determine the size of the file
          DWORD fileSize = GetFileSize(hFile, NULL);
@@ -373,7 +326,7 @@ void WebServer::handle(String key, HttpRequest* req, HttpResponse* res){
 DWORD WINAPI Worker(void* args){
     Thread_Params* params = (Thread_Params*) args;
     WebServer* Server = params->web_server;
-    SOCKET m_client = params->client;
+    Socket* m_client = params->client;
     printf("\nsocket_id: %d\n", m_client);
     char* buffer[DEFAULT_BUFLEN];
     ZeroMemory( buffer, DEFAULT_BUFLEN);

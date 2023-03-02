@@ -5,9 +5,14 @@
 #define WIN32_LEAN_AND_MEAN
 #endif
 
+
+#ifdef _WIN32
 #include <winsock2.h>
 #include <ws2tcpip.h>
 #include <iphlpapi.h>
+#endif
+
+
 #include <stdio.h>
 #include "base/String.h"
 #include "HttpRequest.h"
@@ -28,6 +33,7 @@ private:
     };
     LinkedList<DynamicHandler> dynamic_handlers;
     LinkedList<String> static_paths;
+
     DWORD WORKER_ID;
 public:
     WebServer();

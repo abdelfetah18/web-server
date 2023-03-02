@@ -1,27 +1,21 @@
 #ifndef CLIENT_HEADER //Include Guard
 #define CLIENT_HEADER
 
-#ifndef WIN32_LEAN_AND_MEAN
-#define WIN32_LEAN_AND_MEAN
-#endif
-
-#include <winsock2.h>
-#include <ws2tcpip.h>
-#include <iphlpapi.h>
+#include "Socket.h"
 #include <stdio.h>
 
 class Client{
 public:
-    Client(SOCKET);
+    Client(Socket*);
     void send(char*,int);
     void close_connection();
     // NOTE: I thinking about making the buffer as property in this class.
     int recv(char* buffer,unsigned int len);
     char* get_ip();
 private:
-    SOCKET _socket;
-    DWORD total_bytes_send = 0;
-    DWORD total_bytes_recv = 0;
+    Socket* m_socket = nullptr;
+    double total_bytes_send = 0;
+    double total_bytes_recv = 0;
     bool is_connected = false;
 };
 

@@ -11,6 +11,7 @@ set(SOURCES
     WebServer.cpp
     HttpRequest.cpp
     HttpResponse.cpp
+    Socket.cpp
     base/ByteBuffer.cpp
     base/GenericParser.cpp
     base/Json.cpp
@@ -22,6 +23,7 @@ set(HEADERS
     WebServer.h
     HttpRequest.h
     HttpResponse.h
+    Socket.h
     base/ByteBuffer.h
     base/GenericParser.h
     base/HashTable.h
