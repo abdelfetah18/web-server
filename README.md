@@ -1,4 +1,4 @@
-# Web Server in C++ for windows
+# CrossPlatForm Web Server in C++ (Windows, Linux)
 
 Hi, this is me Abdelfetah Lachenani the creator of this project.
 i do like to mention that this project was built from the scratch with no third party libraries.
@@ -6,15 +6,19 @@ i built my own data structure like:
 1. String
 2. HashTable
 3. SinglyLinkedList
+4. ByteBuffer
+
+and more...
 
 `The documentation for the previous Classes will be comming soon.`
 
 ### Main Classes:
-1. Server.
-2. Client.
-3. HttpRequest.
-4. HttpResponse.
-5. WebServer
+1. Socket.
+2. Server.
+3. Client.
+4. HttpRequest.
+5. HttpResponse.
+6. WebServer
 
 ### Some Details About These Classes :
 - a Server class has full access to all the clients sockets.
@@ -33,13 +37,13 @@ i built my own data structure like:
 2. Handle a request for a specific path by using a callback that give you control over request and response objects.
 3. dynamic path, which mean you can pass params through your path.
 and more features will be comming soon. like a json library that will help you generate a custom response for an api business logic.
+4. cross platform support currently (windows, linux).
 
 # Code Example
 
 ```c++
 
 #include "WebServer.h"
-#pragma comment(lib, "Ws2_32.lib")
 
 #include "base/HashTable.h"
 #include "base/String.h"
@@ -104,7 +108,10 @@ currently we support only get method, and it will be extended to other methods.
 then
 
 ```bash
-    cmake -S . -B C:/Users/amazon/Desktop/WebServer/output "-G<generator>" "-DCMAKE_BUILD_TYPE:STRING=Debug" "-DCMAKE_C_COMPILER:STRING=<c-compile-path>" "-DCMAKE_CXX_COMPILER:STRING=<cpp-compile-path>"
+    cmake -S . -B C:/Users/amazon/Desktop/WebServer/output 
+        "-G<generator>" "-DCMAKE_BUILD_TYPE:STRING=Debug"
+        "-DCMAKE_C_COMPILER:STRING=<c-compile-path>" 
+        "-DCMAKE_CXX_COMPILER:STRING=<cpp-compile-path>"
 ```
 and build :
 ```bash
@@ -118,7 +125,10 @@ and build :
 ```
 
 ```bash
-    cmake -S . -B C:/Users/abdelfetah-dev/Desktop/WebServer/output "-GMinGW Makefiles" "-DCMAKE_BUILD_TYPE:STRING=Debug" "-DCMAKE_C_COMPILER:STRING=C:/Program Files/CodeBlocks/MinGW/bin/gcc.exe" "-DCMAKE_CXX_COMPILER:STRING=C:/Program Files/CodeBlocks/MinGW/bin/g++.exe"
+    cmake -S . -B C:/Users/abdelfetah-dev/Desktop/WebServer/output 
+    "-GMinGW Makefiles" "-DCMAKE_BUILD_TYPE:STRING=Debug" 
+    "-DCMAKE_C_COMPILER:STRING=C:/Program Files/CodeBlocks/MinGW/bin/gcc.exe" 
+    "-DCMAKE_CXX_COMPILER:STRING=C:/Program Files/CodeBlocks/MinGW/bin/g++.exe"
 ```
 
 ```bash
@@ -128,6 +138,5 @@ and build :
 ```bash
     "./output/WebServer.exe"
 ```
-
 
 
