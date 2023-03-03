@@ -41,6 +41,14 @@ void Socket::init(){
     #endif
 }
 
+// FIXME: move this error function to another place
+void error(const char *msg)
+{
+    perror(msg);
+    exit(1);
+}
+
+
 int Socket::socket(){
     #ifdef _WIN32
     
@@ -58,6 +66,10 @@ int Socket::socket(){
 
     return socket_id;
     #else
+    
+    socket_id = ::socket(AF_INET, SOCK_STREAM, 0);
+    if (socket_id < 0) 
+        error("ERROR opening socket");
     
     #endif
 }
@@ -81,6 +93,14 @@ int Socket::bind(){
     
     #else
 
+    bzero((char *) &serv_addr, sizeof(serv_addr));
+    int portno = atoi(port);
+    serv_addr.sin_family = AF_INET;
+    serv_addr.sin_addr.s_addr = INADDR_ANY;
+    serv_addr.sin_port = htons(portno);
+    if(::bind(socket_id, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0) 
+        error("ERROR on binding"); 
+
     #endif
 }
 
@@ -93,11 +113,17 @@ int Socket::listen(){
         WSACleanup();
         return -1;
     }
+    
+    return 0;
+
+    #else
+
+    // FIXME: set the backlogs to its maximun value.
+    ::listen(socket_id, 0xffff);
+
+    #endif
 
     printf("Server is up running on port: %s\n", port);
-
-    return 0;
-    #endif
 }
 
 int Socket::accept(){
@@ -115,13 +141,30 @@ int Socket::accept(){
     }
 
     return client_socket;
+
+    #else
+
+    socklen_t clilen = sizeof(cli_addr);
+    int client_socket = ::accept(socket_id, (struct sockaddr *) &cli_addr, &clilen);
+    if (client_socket < 0) 
+        error("ERROR on accept");
+
+    return client_socket;
+
     #endif
 }
 
 int Socket::send(char* data,int len){
     #ifdef _WIN32
+     
         int iSendResult = ::send(socket_id, data, len, 0);
         return iSendResult;
+    
+    #else
+
+    int bytes_sent = ::send(socket_id, data, len, 0);
+    return bytes_sent;
+
     #endif
 }
 int Socket::recv(char* buffer,unsigned int len){
@@ -133,5 +176,11 @@ int Socket::recv(char* buffer,unsigned int len){
         return SOCKET_ERROR;
     }
     return total_bytes_recv;
+
+    #else
+
+    int bytes_recv = ::recv(socket_id, buffer, len, 0);
+    return bytes_recv;
+    
     #endif
 }

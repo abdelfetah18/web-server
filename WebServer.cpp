@@ -2,6 +2,7 @@
 #include "Client.h"
 
 #include "Socket.h"
+#include "File.h"
 
 typedef struct {
     WebServer* web_server;
@@ -9,8 +10,17 @@ typedef struct {
 } Thread_Params;
 
 #ifdef _WIN32
-static DWORD WINAPI Worker(void* args);
+
+#define THREAD_FUNC static DWORD WINAPI
+
+#else
+
+#include "pthread.h"
+#define THREAD_FUNC static void*
+
 #endif
+
+THREAD_FUNC Worker(void* args);
 
 WebServer::WebServer(){ }
 
@@ -38,6 +48,8 @@ void WebServer::listen(const char port[]){
 
         #ifdef _WIN32
         CreateThread( NULL, 0, Worker, th_pr,0, &WORKER_ID);
+        #else
+        pthread_create(&WORKER_ID, nullptr, Worker, th_pr);
         #endif
     }
     return;
@@ -211,29 +223,28 @@ void WebServer::handle(String key, HttpRequest* req, HttpResponse* res){
     if(found && key.startWith("GET")){
         // readfiles and send response
         // Open a handle to the file
-        HANDLE hFile = CreateFile(path.get(), GENERIC_READ,0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
-
-        if (hFile == INVALID_HANDLE_VALUE) {
-             printf("\nINVALID_HANDLE_VALUE %d\n", GetLastError());
-           // An error occurred
-             res->status(404);
-             res->setHeader("Server","abdelfetah-dev");
-             res->send("<h1>404 Not Found!</h1>");
-             return;
+        File my_file(path.get());
+        
+        if(my_file.getFileHandle() < 0) {
+            printf("\nINVALID_HANDLE_VALUE\n");
+            // An error occurred
+            res->status(404);
+            res->setHeader("Server","abdelfetah-dev");
+            res->send("<h1>404 Not Found!</h1>");
+            return;
         }
 
-         // Determine the size of the file
-         DWORD fileSize = GetFileSize(hFile, NULL);
+        // Determine the size of the file
+        uint fileSize = my_file.getSize();
 
-         // Allocate a buffer to hold the file contents
-         char* buffer = new char[fileSize+1];
+        // Allocate a buffer to hold the file contents
+        char* buffer = new char[fileSize+1];
 
-         // Read the contents of the file
-         DWORD bytesRead;
-         bool success = ReadFile(hFile, buffer, fileSize, &bytesRead, nullptr);
+        // Read the contents of the file
+        bool success = my_file.read(buffer);
 
          if (!success) {
-             printf("\nReadFile failed! %d\n", GetLastError());
+             printf("\nReadFile failed!\n");
            // An error occurred
              res->status(404);
              res->setHeader("Server","abdelfetah-dev");
@@ -292,7 +303,7 @@ void WebServer::handle(String key, HttpRequest* req, HttpResponse* res){
         delete[] buffer;
 
         // Close the handle to the file
-        CloseHandle(hFile);
+        my_file.close();
     }else{
         // TODO: improve the algorithm
         bool found = false;
@@ -322,14 +333,19 @@ void WebServer::handle(String key, HttpRequest* req, HttpResponse* res){
     }
 }
 
-DWORD WINAPI Worker(void* args){
+THREAD_FUNC Worker(void* args){
     Thread_Params* params = (Thread_Params*) args;
     WebServer* Server = params->web_server;
     Socket m_client(params->client);
     
     char* buffer[DEFAULT_BUFLEN];
-    ZeroMemory( buffer, DEFAULT_BUFLEN);
-
+    
+    // FIXME: implement such a utility to clean the buffer, or add a method to ByteBuffer class
+    #ifdef _WIN32
+    ZeroMemory(buffer, DEFAULT_BUFLEN);
+    #else
+    bzero(buffer, DEFAULT_BUFLEN);
+    #endif
     Client client(&m_client);
 
     client.recv((char*) buffer, DEFAULT_BUFLEN);

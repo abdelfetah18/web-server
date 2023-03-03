@@ -34,7 +34,11 @@ private:
     LinkedList<DynamicHandler> dynamic_handlers;
     LinkedList<String> static_paths;
 
+    #ifdef _WIN32
     DWORD WORKER_ID;
+    #else
+    pthread_t WORKER_ID;
+    #endif
 public:
     WebServer();
     ~WebServer();

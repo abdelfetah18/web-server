@@ -12,6 +12,7 @@ set(SOURCES
     HttpRequest.cpp
     HttpResponse.cpp
     Socket.cpp
+    File.cpp
     base/ByteBuffer.cpp
     base/GenericParser.cpp
     base/Json.cpp
@@ -24,6 +25,7 @@ set(HEADERS
     HttpRequest.h
     HttpResponse.h
     Socket.h
+    File.h
     base/ByteBuffer.h
     base/GenericParser.h
     base/HashTable.h
@@ -35,4 +37,7 @@ set(HEADERS
     base/Vector.h)
 
 add_executable(WebServer ${SOURCES} ${HEADERS})
-target_link_libraries(WebServer wsock32 ws2_32)
+
+if(WIN32)
+    target_link_libraries(WebServer wsock32 ws2_32)
+endif()

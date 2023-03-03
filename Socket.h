@@ -15,6 +15,10 @@
 
 #else
     #include <sys/socket.h>
+    #include <sys/types.h>
+    #include <netinet/in.h>
+    #include <string.h>
+    #include <stdlib.h>
 #endif
 
 class Socket {
@@ -35,7 +39,8 @@ private:
         struct addrinfo* addr_info;
         struct addrinfo hints;
     #else
-        int m_socket;
+        int socket_id;
+        struct sockaddr_in serv_addr, cli_addr;
     #endif
 };
 
