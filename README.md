@@ -126,9 +126,9 @@ and build :
 
 ```bash
     cmake -S . -B C:/Users/abdelfetah-dev/Desktop/WebServer/output 
-    "-GMinGW Makefiles" "-DCMAKE_BUILD_TYPE:STRING=Debug" 
-    "-DCMAKE_C_COMPILER:STRING=C:/Program Files/CodeBlocks/MinGW/bin/gcc.exe" 
-    "-DCMAKE_CXX_COMPILER:STRING=C:/Program Files/CodeBlocks/MinGW/bin/g++.exe"
+        "-GMinGW Makefiles" "-DCMAKE_BUILD_TYPE:STRING=Debug" 
+        "-DCMAKE_C_COMPILER:STRING=C:/Program Files/CodeBlocks/MinGW/bin/gcc.exe" 
+        "-DCMAKE_CXX_COMPILER:STRING=C:/Program Files/CodeBlocks/MinGW/bin/g++.exe"
 ```
 
 ```bash
