@@ -12,6 +12,7 @@ public:
     void status(int);
     ByteBuffer get_raw_response();
     void setHeader(const char*,const char*);
+    void setHeader(const char* name,String token);
     void send(const char*);
     void send(char*,int);
     uint get_control_data_size();

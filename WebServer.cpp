@@ -22,7 +22,19 @@ typedef struct {
 
 THREAD_FUNC Worker(void* args);
 
-WebServer::WebServer(){ }
+WebServer::WebServer(){
+    // Init Supported Mime Types HashTable.
+    supported_mime_types.set(".png","image/png");
+    supported_mime_types.set(".jpg","image/jpeg");
+    supported_mime_types.set(".jpeg","image/jpeg");
+    supported_mime_types.set(".jfif","image/jpeg");
+    supported_mime_types.set(".pjpeg","image/jpeg");
+    supported_mime_types.set(".pjp","image/jpeg");
+    supported_mime_types.set(".html","text/html");
+    supported_mime_types.set(".js","text/javascript");
+    supported_mime_types.set(".json","application/json");
+    supported_mime_types.set(".mp4","video/mp4");
+}
 
 void WebServer::listen(const char port[]){
 
@@ -243,57 +255,26 @@ void WebServer::handle(String key, HttpRequest* req, HttpResponse* res){
         // Read the contents of the file
         bool success = my_file.read(buffer);
 
-         if (!success) {
-             printf("\nReadFile failed!\n");
-           // An error occurred
-             res->status(404);
-             res->setHeader("Server","abdelfetah-dev");
-             res->send("<h1>404 Not Found!</h1>");
-             return;
+        if(!success){
+            printf("\nReadFile failed!\n");
+            // An error occurred
+            res->status(404);
+            res->setHeader("Server","abdelfetah-dev");
+            res->send("<h1>404 Not Found!</h1>");
+            return;
          }
 
-         // TODO: implement a way to map file extensions on its mimeType.
-
-         // determine a mimeType by its extension.
+        // determine a mimeType by its extension.
         String ext(path.get() + path.indexOf('.'));
         ext.to_lower_case();
-        // .png
-        bool is_set = false;
-        if(ext.startWith(String(".png"))){
-            res->setHeader("Content-Type","image/png");
-            is_set = true;
-        }
 
-        // .jpg, .jpeg, .jfif, .pjpeg, .pjp
-        if(ext.startWith(String(".jpg")) || ext.startWith(String(".jpeg")) || ext.startWith(String(".jfif")) || ext.startWith(String(".pjpeg")) || ext.startWith(String(".pjp"))){
-            res->setHeader("Content-Type","image/jpeg");
-            is_set = true;
-        }
-
-        if(ext.startWith(String(".html"))){
-            res->setHeader("Content-Type", "text/html");
-            is_set = true;
-        }
-
-        if(ext.startWith(String(".js"))){
-            res->setHeader("Content-Type", "text/javascript");
-            is_set = true;
-        }
-
-        if(ext.startWith(String(".json"))){
-            res->setHeader("Content-Type", "application/json");
-            is_set = true;
-        }
-
-        if(ext.startWith(String(".mp4"))){
-            res->setHeader("Content-Type","video/mp4");
-            is_set = true;
-        }
-
-        // if files exist with unkonws mediaType.
-        if(!is_set){
+        String mime_type;
+        bool is_supported = supported_mime_types.get(ext, mime_type);
+        
+        if(is_supported){
+            res->setHeader("Content-Type", mime_type);
+        }else{ // if files exist with unkonws mediaType.
             res->setHeader("Content-Type","application/octet-stream");
-            is_set = true;
         }
 
         res->status(200);

@@ -26,11 +26,13 @@ class WebServer {
 private:
     typedef void (*callback)(HttpRequest*,HttpResponse*);
     HashTable<String, callback> handlers;
+    HashTable<String, String> supported_mime_types;
     // Dynamic handler is a way that let you handle a params from the path.
     struct DynamicHandler {
         String dynamic_path;
         callback call;
     };
+
     LinkedList<DynamicHandler> dynamic_handlers;
     LinkedList<String> static_paths;
 

@@ -43,6 +43,13 @@ uint HttpResponse::get_header_fields_size(){
     return total;
 }
 
+void HttpResponse::setHeader(const char* name,String token){
+    Field* field = new Field;
+    field->name.push(name);
+    field->token.push(token.get());
+    header_fields.append(*field);
+}
+
 void HttpResponse::setHeader(const char* name,const char* token){
     Field* field = new Field;
     field->name.push(name);
