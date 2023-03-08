@@ -1,70 +1,69 @@
 #include <stdio.h>
 
-// Type Treat is_same
+// Type Treat is_same which runs at compile time
 template<typename T,typename U>
-static bool is_same = false;
+constexpr static bool is_same = false;
 
 template<typename T>
-static bool is_same<T,T> = true;
+constexpr static bool is_same<T,T> = true;
+
+// Base case for recursive template parameter finder
+template<typename T>
+constexpr bool contain_type(){
+    return false;
+}
+
+// Template parameter finder at compile time
+template<typename T,typename Current,typename... Args>
+constexpr  bool contain_type(){
+    if(is_same<T,Current>)
+        return true;
+    else{
+        if(sizeof...(Args) == 0)
+            return false;
+        return contain_type<T,Args...>();
+    }
+}
 
 
 template<typename... TS>
 class Variant {
     private:
-        int max;
-        char* storage;
+        int m_selected_type;
+        char* m_storage;
     public:
+
+    Variant(){ }
+
+    template<typename T>
+    Variant& operator =(T v){
+        // printf("contain_type: %s\n", contain_type<T>() ? "true" : "false");
+        static_assert(contain_type<T,TS...>(), "Type Not Found");
+        
+        // Allocate memory with the size of target variant
+        m_storage = new char[sizeof(T)+1];
+        // Copy T object to m_storage
+        for(int i = 0; i < sizeof(T); i++)
+            m_storage[i] = ((char*) &v)[i];
+        
+        return *this;
+    }
 
     template<typename T>
     Variant(T v){
-        printf("contain_type: %s\n", contain_type<T>() ? "true" : "false");
+        // printf("contain_type: %s\n", contain_type<T>() ? "true" : "false");
+        static_assert(contain_type<T,TS...>(), "Type Not Found");
         // Allocate memory with the size of target variant
-        storage = new char[sizeof(T)+1];
-        // Copy T object to storage
+        m_storage = new char[sizeof(T)+1];
+        // Copy T object to m_storage
         for(int i = 0; i < sizeof(T); i++)
-            storage[i] = ((char*) &v)[i];
+            m_storage[i] = ((char*) &v)[i];
     }
 
     template<typename T>
     T* get(){
-        return (T*)(storage);
-    }
-
-    // base case for recursion
-    void traverse_pack() {}
-    
-    // recursive function to traverse the pack
-    template<typename T, typename... Args>
-    void traverse_pack(T arg, Args... args) {
-        // process current argument
-        // ...
-        int t = sizeof(T);
-        printf("sizeof: %d\n", t);
-        if(t > max)
-            max = t;
-        // call recursive function for remaining arguments
-        traverse_pack(args...);
-    }
-    
-    template<typename T>
-    bool contain_type(){ 
-        return contain_type<T,TS...>();
-    }
-
-    template<typename T,typename Current,typename... Args>
-    bool contain_type(){
-        if(is_same<T,Current>)
-            return true;
-        else{
-            if(sizeof...(Args) == 0)
-                return false;
-            return contain_type<T,Args...>();
-        }
-    }
-
-    int getMax(){
-        traverse_pack<TS...>(sizeof(TS)...);
-        return max;
+        static_assert(contain_type<T,TS...>(), "Type Not Found");
+        return (T*)(m_storage);
     }
 };
 
@@ -72,7 +71,24 @@ class Variant {
 
 class Node {
     public:
-    void show(){ printf("Node\n"); }
+    Node():m_str(nullptr){ }
+    Node(const char* str){
+        unsigned int size = str_len((char*) str);
+        m_str = new char[size];
+        for(unsigned int i = 0; i < size; i++)
+            m_str[i] = str[i];
+    }
+
+    void show(){ printf("Node: %s\n", m_str); }
+
+    private:
+    unsigned int str_len(char* str){
+        unsigned int size = 0;
+        while(str[size] != '\0')
+            size++;
+        return size;
+    }
+    char* m_str;
 };
 
 class Object {
@@ -103,14 +119,18 @@ class Test {
 
 int main()
 {
-/*
-    Node a;
-    Test<Node> test(a);
-    test.show();
-*/
 
-    std::variant<Node,Object> test;
-    std::get<Node>(test).show();  
+    // Third a;
+    // Test<Third> test(a);
+    // test.show();
+    Variant<Node,Object> test;
+    test = Node("HelloWorld");
+
+    Object* node = test.get<Object>();
+    node->show();
+
+    // std::variant<Node,Object> test;
+    // std::get<Node>(test).show();  
 
     return 0;
 }
