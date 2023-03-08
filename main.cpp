@@ -18,15 +18,15 @@ void About(HttpRequest* req,HttpResponse* res){
 void DynamicPathHandler(HttpRequest* req, HttpResponse* res){
     String data("username: ");
 
-    String username;
-    req->params.get("username", username);
-    data.push(username);
+    auto username = req->params.get("username");
+    if(!username.is_error())
+        data.push(username.value());
 
     data.push("<br>id: ");
 
-    String id;
-    req->params.get("id", id);
-    data.push(id);
+    auto id = req->params.get("id");
+    if(!id.is_error())
+        data.push(id.value());
 
     res->status(200);
     res->send(data.get());

@@ -124,9 +124,9 @@ void Array::show(){
 }
 
 JsonValue JsonObject::operator[](char key[]){
-    JsonValue js_value;
-    if(objects.get(String(key), js_value)){
-        return js_value;
+    auto js_value = objects.get(String(key));
+    if(js_value.is_error()){
+        return js_value.value();
     }
     return { nullptr };
 }

@@ -268,11 +268,10 @@ void WebServer::handle(String key, HttpRequest* req, HttpResponse* res){
         String ext(path.get() + path.indexOf('.'));
         ext.to_lower_case();
 
-        String mime_type;
-        bool is_supported = supported_mime_types.get(ext, mime_type);
+        auto mime_type = supported_mime_types.get(ext);
         
-        if(is_supported){
-            res->setHeader("Content-Type", mime_type);
+        if(!mime_type.is_error()){
+            res->setHeader("Content-Type", mime_type.value());
         }else{ // if files exist with unkonws mediaType.
             res->setHeader("Content-Type","application/octet-stream");
         }
@@ -301,10 +300,9 @@ void WebServer::handle(String key, HttpRequest* req, HttpResponse* res){
 
         // and if we didnt find anything then we check in static handlers
         if(!found){
-            callback call;
-            bool exist = handlers.get(key, call);
-            if(exist)
-                call(req,res);
+            auto call = handlers.get(key);
+            if(!call.is_error())
+                call.value()(req,res);
             else{
                 res->status(404);
                 res->setHeader("Server","abdelfetah-dev");

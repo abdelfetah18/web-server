@@ -1,6 +1,7 @@
 #ifndef HASHTABLE_H
 #define HASHTABLE_H
 
+#include "ErrorOr.h"
 #include "LinkedList.h"
 #include "stdio.h"
 
@@ -8,6 +9,9 @@ template <typename KEY,typename VALUE>
 class HashTable {
 
 public:
+    enum ErrorType {
+        NOT_FOUND
+    };
 
     void set(KEY key,VALUE value){
         size += 1;
@@ -15,14 +19,13 @@ public:
         table[index].append(createBucket(key,value));
     }
 
-    bool get(KEY key,VALUE& value){
+    ErrorOr<VALUE,ErrorType> get(KEY key){
         int index = hash_function(key) % 64;
         Bucket test;
         if(table[index].find(createBucket(key,{}), test)){
-            value = test.value;
-            return true;
+            return test.value;
         }
-        return false;
+        return ErrorType::NOT_FOUND;
     }
 
     void show(){

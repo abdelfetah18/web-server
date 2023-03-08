@@ -170,9 +170,9 @@ int HttpRequest::parse(){
 
     if(p_state == PARSING_STATE::BODY){
         if(control_data.method == HTTP_METHOD::POST || control_data.method == HTTP_METHOD::PUT){
-            String content_length;
-            if(header_fields.get("Content-Length", content_length)){
-                unsigned int len = parseInt(content_length);
+            auto content_length = header_fields.get("Content-Length");
+            if(!content_length.is_error()){
+                unsigned int len = parseInt(content_length.value());
                 for(unsigned int i = pos; i < pos+len; i++){
                     body.append((Byte) str[i]);
                 }
