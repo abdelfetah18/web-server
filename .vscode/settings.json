@@ -9,6 +9,8 @@
         "tuple": "cpp",
         "typeinfo": "cpp",
         "memory_resource": "cpp",
-        "variant": "cpp"
+        "variant": "cpp",
+        "*.tcc": "cpp",
+        "ostream": "cpp"
     }
 }

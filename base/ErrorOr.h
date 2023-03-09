@@ -2,7 +2,7 @@
 #define ERROR_OR_HEADER
 
 #include <stdio.h>
-#include <variant>
+#include "Variant.h"
 
 typedef unsigned char Byte;
 typedef unsigned int uint;
@@ -24,13 +24,20 @@ public:
     ~ErrorOr(){ };
     
     bool is_error(){ return m_is_error; };
-    T value(){ return std::get<T> (m_value_or_error); }
-    E error(){ return std::get<E> (m_value_or_error); }
+    
+    T& value(){ 
+        return m_value_or_error.template get<T>();
+    }
+
+    E& error(){ 
+        return m_value_or_error.template get<E>();
+        
+    }
 
 private:
     bool m_is_error;
     // FIXME: implementing my own version of variant 
-    std::variant<T,E> m_value_or_error;
+    Variant<T,E> m_value_or_error;
 };
 
 #endif
