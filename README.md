@@ -85,12 +85,14 @@ int main()
 as you can see in the code, first create an Object with type of `WebServer` and register the paths you wonna server.
 
 ```c++
-    // callback function must be in type void (HttpRequest*, HttpResponse*)
+    // Callback function must be in type void (HttpRequest*, HttpResponse*)
     void callback(HttpRequest* req,HttpResponse* res){
         res->send("<h1>HelloWorld!</h1>");
     }
 
-    // path must equal the request if it uppercase the request will only apply to uppercase and the same for lower case and must start with '/' character
+    // Path must equal the request if it uppercase the request will
+    // only apply to uppercase and the same for lower case and must
+    // start with '/' character.
     server.get(<path>, callback);
 ```
 
