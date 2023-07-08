@@ -237,6 +237,16 @@ void WebServer::handle(String key, HttpRequest* req, HttpResponse* res){
         // Open a handle to the file
         File my_file(path.get());
         
+        #ifdef _WIN32
+        if(my_file.getFileHandle() == INVALID_HANDLE_VALUE) {
+            printf("\nINVALID_HANDLE_VALUE\n");
+            // An error occurred
+            res->status(404);
+            res->setHeader("Server","abdelfetah-dev");
+            res->send("<h1>404 Not Found!</h1>");
+            return;
+        }
+        #else
         if(my_file.getFileHandle() < 0) {
             printf("\nINVALID_HANDLE_VALUE\n");
             // An error occurred
@@ -245,6 +255,7 @@ void WebServer::handle(String key, HttpRequest* req, HttpResponse* res){
             res->send("<h1>404 Not Found!</h1>");
             return;
         }
+        #endif
 
         // Determine the size of the file
         uint fileSize = my_file.getSize();

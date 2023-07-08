@@ -9,9 +9,9 @@ class Vector
 private:
     uint m_capacity = 8;
     uint m_size = 0;
-    VALUE* m_array = new VALUE[m_capacity];
+    VALUE* m_array { nullptr };
 public:
-    Vector(){ };
+    Vector() : m_array(new VALUE[m_capacity]){ };
     ~Vector(){ };
 
     uint size(){

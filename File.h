@@ -5,7 +5,7 @@
 #include "stdio.h"
 
 #ifdef _WIN32
-
+    #include <windows.h>
 #else
     #include "fcntl.h"
     #include "unistd.h"
@@ -14,14 +14,24 @@
 class File {
     public:
     File(char* path);
-    int open();
     unsigned int getSize();
     bool read(char* buffer);
     void close();
+
+    #ifdef _WIN32
+    HANDLE open();
+    HANDLE getFileHandle();
+    #else
+    int open();
     int getFileHandle();
-    
+    #endif
+
     private:
+    #ifdef _WIN32
+    HANDLE file_handle;
+    #else
     int file_handle;
+    #endif
     unsigned int file_size = 0;
     String file_path;
 };

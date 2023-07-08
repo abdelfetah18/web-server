@@ -5,9 +5,6 @@ File::File(char* path){
     file_handle = open();
 
     #ifdef _WIN32
-    if(file_handle == INVALID_HANDLE_VALUE)
-        file_handle = -1;
-    
     DWORD fileSize = GetFileSize(file_handle, NULL);
     file_size = fileSize;
     #else
@@ -17,14 +14,16 @@ File::File(char* path){
 
 }
 
-int File::open(){
-    #ifdef _WIN32
+#ifdef _WIN32
+HANDLE File::open(){
     HANDLE hFile = CreateFile(file_path.get(), GENERIC_READ,0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
     return hFile;
-    #else
-    return ::open(file_path.get(), O_RDONLY);   
-    #endif
 }
+#else
+int File::open(){
+    return ::open(file_path.get(), O_RDONLY);   
+}
+#endif
 
 unsigned int File::getSize(){ return file_size; }
 
@@ -47,4 +46,8 @@ void File::close(){
     #endif
 }
 
+#ifdef _WIN32
+HANDLE File::getFileHandle(){ return file_handle; }
+#else
 int File::getFileHandle(){ return file_handle; }
+#endif
