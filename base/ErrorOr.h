@@ -36,7 +36,6 @@ public:
 
 private:
     bool m_is_error;
-    // FIXME: implementing my own version of variant 
     Variant<T,E> m_value_or_error;
 };
 
