@@ -26,6 +26,7 @@ public:
     Socket(const char*);
     Socket(int s);
     void init(); // For windows only
+    void close();
 	int socket();
 	int bind();
 	int listen();

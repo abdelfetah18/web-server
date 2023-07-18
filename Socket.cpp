@@ -184,3 +184,9 @@ int Socket::recv(char* buffer,unsigned int len){
     
     #endif
 }
+
+void Socket::close(){
+    #ifdef _WIN32
+    closesocket(socket_id);
+    #endif
+}

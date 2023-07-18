@@ -5,8 +5,7 @@ Client::Client(Socket* s):m_socket(s),is_connected(true){ };
 
 void Client::close_connection(){
     is_connected = false;
-    
-    // FIXME: implement a close_socket in the Socket class
+    m_socket->close();
 }
 
 void Client::send(char* data,int len){

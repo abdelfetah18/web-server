@@ -66,6 +66,7 @@ void HttpResponse::send(const char* data){
     char* buffer = (char*) buf.get_buffer();
     uint total_size = buf.get_size();
     client.send( buffer, total_size);
+    client.close_connection();
 }
 
 void HttpResponse::send(char* buffer, int size){
