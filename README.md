@@ -1,16 +1,12 @@
 # CrossPlatForm Web Server in C++ (Windows, Linux)
 
-Hi, this is me Abdelfetah Lachenani the creator of this project.
-i do like to mention that this project was built from the scratch with no third party libraries.
-i built my own data structure like:
-1. String
-2. HashTable
-3. SinglyLinkedList
-4. ByteBuffer
+This project built from scratch without any third party libraries. It has
+its own data structures including `String`, `SinglyLinkedList`, `HashTable`, `ByteBuffer` and more.
 
-and more...
+**PREVIEW:** https://web-server-mkgs.onrender.com
 
-`The documentation for the previous Classes will be comming soon.`
+This preview is running from a docker container check the `Dockerfile` for more information.
+
 
 ### Main Classes:
 1. Socket.
