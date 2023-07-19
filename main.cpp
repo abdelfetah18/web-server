@@ -7,7 +7,7 @@
 
 void Home(HttpRequest* req,HttpResponse* res){
     res->status(200);
-    res->send("<h1>Home!</h1>");
+    res->send("<h1>Home</h1>");
 }
 
 void About(HttpRequest* req,HttpResponse* res){
@@ -36,7 +36,7 @@ int main()
 {
     WebServer server;
     server.use_static_path("public");
-    server.get("/home", Home);
+    server.get("/", Home);
     server.get("/About", About);
     server.get("/users/:username/dashboard/:id", DynamicPathHandler);
     server.listen("8000");
