@@ -218,7 +218,7 @@ void WebServer::handle(String key, HttpRequest* req, HttpResponse* res){
     // NOTE: this is not a good way to extract a path from a String
     char* str = key.get();
     while(*(str++) != ':'){ }
-    str++;
+    
     String path(str);
 
     bool found = false;
