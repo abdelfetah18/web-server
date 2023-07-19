@@ -68,8 +68,11 @@ public:
     */
 
     void handle(String, HttpRequest*, HttpResponse*);
-
+    void handle_static_path(String, HttpRequest*, HttpResponse*);
+    bool handle_dynamic_path(String, HttpRequest*, HttpResponse*);
+    
     //static DWORD WINAPI Worker(LPVOID lpParam);
+    bool is_static_path(String path);
 };
 
 

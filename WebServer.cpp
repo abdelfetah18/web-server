@@ -214,13 +214,7 @@ bool match_dynamic_path(String static_path,String dynamic_path,HashTable<String,
     }
 }
 
-void WebServer::handle(String key, HttpRequest* req, HttpResponse* res){
-    // NOTE: this is not a good way to extract a path from a String
-    char* str = key.get();
-    while(*(str++) != ':'){ }
-    
-    String path(str);
-
+bool WebServer::is_static_path(String path){
     bool found = false;
 
     LinkedListIterator<LinkedList<String>::Bucket> iterator(static_paths.get_head());
@@ -232,93 +226,109 @@ void WebServer::handle(String key, HttpRequest* req, HttpResponse* res){
         iterator.increment();
     }
 
-    if(found && key.startWith("GET")){
-        // readfiles and send response
-        // Open a handle to the file
-        File my_file(path.get());
-        
-        #ifdef _WIN32
-        if(my_file.getFileHandle() == INVALID_HANDLE_VALUE) {
-            printf("\nINVALID_HANDLE_VALUE\n");
-            // An error occurred
+    return found;
+}
+
+
+void WebServer::handle_static_path(String path, HttpRequest* req, HttpResponse* res){
+    // readfiles and send response
+    // Open a handle to the file
+    File my_file(path.get());
+    
+    #ifdef _WIN32
+    if(my_file.getFileHandle() == INVALID_HANDLE_VALUE) {
+        printf("\nINVALID_HANDLE_VALUE\n");
+        // An error occurred
+        res->status(404);
+        res->setHeader("Server","abdelfetah-dev");
+        res->send("<h1>404 Not Found!</h1>");
+        return;
+    }
+    #else
+    if(my_file.getFileHandle() < 0) {
+        printf("\nINVALID_HANDLE_VALUE\n");
+        // An error occurred
+        res->status(404);
+        res->setHeader("Server","abdelfetah-dev");
+        res->send("<h1>404 Not Found!</h1>");
+        return;
+    }
+    #endif
+
+    // Determine the size of the file
+    uint fileSize = my_file.getSize();
+
+    // Allocate a buffer to hold the file contents
+    char* buffer = new char[fileSize+1];
+
+    // Read the contents of the file
+    bool success = my_file.read(buffer);
+
+    if(!success){
+        printf("\nReadFile failed!\n");
+        // An error occurred
+        res->status(404);
+        res->setHeader("Server","abdelfetah-dev");
+        res->send("<h1>404 Not Found!</h1>");
+        return;
+    }
+
+    // determine a mimeType by its extension.
+    String ext(path.get() + path.indexOf('.'));
+    ext.to_lower_case();
+
+    auto mime_type = supported_mime_types.get(ext);
+    
+    if(!mime_type.is_error()){
+        res->setHeader("Content-Type", mime_type.value());
+    }else{ // if files exist with unkonws mediaType.
+        res->setHeader("Content-Type","application/octet-stream");
+    }
+
+    res->status(200);
+    res->send(buffer, fileSize);
+
+    // Free the buffer
+    delete[] buffer;
+
+    // Close the handle to the file
+    my_file.close();
+}
+
+bool WebServer::handle_dynamic_path(String key, HttpRequest* req, HttpResponse* res){
+    LinkedListIterator<LinkedList<DynamicHandler>::Bucket> iterator(dynamic_handlers.get_head());
+    while(!iterator.is_end()){
+        if(match_dynamic_path(key, iterator.node()->value.dynamic_path, req->params)){
+            iterator.node()->value.call(req,res);
+            return true;
+        }
+        iterator.increment();
+    }
+
+    return false;
+}
+
+void WebServer::handle(String key, HttpRequest* req, HttpResponse* res){
+    if(req->getMethod().startWith("GET")){
+        // 1. Checking the static_paths.
+        String path(req->getPath());
+        if(is_static_path(path)){
+            handle_static_path(path, req, res);
+            return;
+        }
+    }
+
+    bool did_handle = handle_dynamic_path(key, req, res);
+
+    // And if we didn't handle anything then we try to check in static handlers.
+    if(!did_handle){
+        auto call = handlers.get(key);
+        if(!call.is_error())
+            call.value()(req,res);
+        else{
             res->status(404);
             res->setHeader("Server","abdelfetah-dev");
             res->send("<h1>404 Not Found!</h1>");
-            return;
-        }
-        #else
-        if(my_file.getFileHandle() < 0) {
-            printf("\nINVALID_HANDLE_VALUE\n");
-            // An error occurred
-            res->status(404);
-            res->setHeader("Server","abdelfetah-dev");
-            res->send("<h1>404 Not Found!</h1>");
-            return;
-        }
-        #endif
-
-        // Determine the size of the file
-        uint fileSize = my_file.getSize();
-
-        // Allocate a buffer to hold the file contents
-        char* buffer = new char[fileSize+1];
-
-        // Read the contents of the file
-        bool success = my_file.read(buffer);
-
-        if(!success){
-            printf("\nReadFile failed!\n");
-            // An error occurred
-            res->status(404);
-            res->setHeader("Server","abdelfetah-dev");
-            res->send("<h1>404 Not Found!</h1>");
-            return;
-         }
-
-        // determine a mimeType by its extension.
-        String ext(path.get() + path.indexOf('.'));
-        ext.to_lower_case();
-
-        auto mime_type = supported_mime_types.get(ext);
-        
-        if(!mime_type.is_error()){
-            res->setHeader("Content-Type", mime_type.value());
-        }else{ // if files exist with unkonws mediaType.
-            res->setHeader("Content-Type","application/octet-stream");
-        }
-
-        res->status(200);
-        res->send(buffer, fileSize);
-
-        // Free the buffer
-        delete[] buffer;
-
-        // Close the handle to the file
-        my_file.close();
-    }else{
-        // TODO: improve the algorithm
-        bool found = false;
-        // first we check in dynamic handlers
-        LinkedListIterator<LinkedList<DynamicHandler>::Bucket> iterator(dynamic_handlers.get_head());
-        while(!iterator.is_end()){
-            if(match_dynamic_path(key, iterator.node()->value.dynamic_path, req->params)){
-                iterator.node()->value.call(req,res);
-                found = true;
-                break;
-            }
-            iterator.increment();
-        }
-
-        // and if we didnt find anything then we check in static handlers
-        if(!found){
-            auto call = handlers.get(key);
-            if(!call.is_error())
-                call.value()(req,res);
-            else{
-                res->status(404);
-                res->setHeader("Server","abdelfetah-dev");
-                res->send("<h1>404 Not Found!</h1>");
-            }
         }
     }
 }
