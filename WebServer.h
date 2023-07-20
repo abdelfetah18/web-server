@@ -17,30 +17,14 @@
 #include "base/String.h"
 #include "HttpRequest.h"
 #include "HttpResponse.h"
+#include "base/Vector.h"
+#include "PathHandler.h"
 
 #define KBYTE 1024
 #define DEFAULT_BUFLEN KBYTE*8
 
 
 class WebServer {
-private:
-    typedef void (*callback)(HttpRequest*,HttpResponse*);
-    HashTable<String, callback> handlers;
-    HashTable<String, String> supported_mime_types;
-    // Dynamic handler is a way that let you handle a params from the path.
-    struct DynamicHandler {
-        String dynamic_path;
-        callback call;
-    };
-
-    LinkedList<DynamicHandler> dynamic_handlers;
-    LinkedList<String> static_paths;
-
-    #ifdef _WIN32
-    DWORD WORKER_ID;
-    #else
-    pthread_t WORKER_ID;
-    #endif
 public:
     WebServer();
     ~WebServer();
@@ -48,7 +32,7 @@ public:
     void use_static_path(const char*);
     void listen(const char port[]);
 
-    void WebServer::register_callback(const char* path,String key,callback call);
+    void register_callback(const char* path,const char* method,callback call);
 
     // HttpRequest Methods
     void get(const char* path, callback);
@@ -69,12 +53,25 @@ public:
          TRACE         Perform a message loop-back test along the path to the target resource.
     */
 
-    void handle(String, HttpRequest*, HttpResponse*);
+    void handle(HttpRequest*, HttpResponse*);
     void handle_static_path(String, HttpRequest*, HttpResponse*);
-    bool handle_dynamic_path(String, HttpRequest*, HttpResponse*);
-    
+    bool handle_path(HttpRequest* req, HttpResponse* res);
+
     //static DWORD WINAPI Worker(LPVOID lpParam);
     bool is_static_path(String path);
+private:
+    HashTable<String, String> supported_mime_types;
+
+    LinkedList<PathHandler*> handlers;
+    LinkedList<String> static_paths;
+
+    
+
+    #ifdef _WIN32
+    DWORD WORKER_ID;
+    #else
+    pthread_t WORKER_ID;
+    #endif
 };
 
 
