@@ -5,6 +5,9 @@
 #include<stdlib.h>
 
 
+// TODO: Make it possible to pass RValue throw constructors like the acctual std::variant did
+//        Example: Variant<String, int> example(String("example"));
+
 typedef unsigned char Byte;
 typedef unsigned int uint;
 
@@ -80,7 +83,7 @@ class Variant {
     }
 
     template<typename T>
-    Variant(T v):m_selected_type(IndexOf<T,0,TS...>()){
+    Variant(T& v):m_selected_type(IndexOf<T,0,TS...>()){
         // printf("contain_type: %s\n", contain_type<T>() ? "true" : "false");
         static_assert(contain_type<T,TS...>(), "Type Not Found");
         // Allocate memory with the size of target variant
