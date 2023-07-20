@@ -3,6 +3,8 @@
 
 typedef unsigned int uint;
 
+#include "Vector.h"
+
 class String{
 public:
     String(const char[]);
@@ -25,10 +27,13 @@ public:
     void to_lower_case();
     void to_upper_case();
     bool startWith(String);
+    Vector<String>* split(char);
     void operator =(String&);
 
 
     bool operator ==(String other){
+        if(size != other.length())
+            return false;
         char* str_1 = other.get();
         for(uint i=0; i < size; i++){
             if(str[i] != str_1[i]){

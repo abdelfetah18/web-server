@@ -189,6 +189,29 @@ bool String::startWith(String other){
     return same;
 }
 
+Vector<String>* String::split(char c){
+    Vector<String>* array = new Vector<String>();
+    uint index = 0;
+    String part;
+    while(str[index] != '\0'){
+        if(str[index] == c){
+            index += 1;
+            if(index-1 == 0)
+                continue;
+            array->append(part);
+            part.clear();
+            continue;
+        }
+        part.push(str[index]);
+        index += 1;
+    }
+    
+    if(part.length() > 0)
+        array->append(part);
+    
+    return array;
+}
+
 bool String::lookup(const char* data){
     bool found = false;
     for(uint i=0; i < size; i++){
