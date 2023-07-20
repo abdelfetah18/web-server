@@ -1,2 +1,5 @@
 build-WebServer-Desktop-Debug
 build
+path-parsing.js
+.vscode
+tests
