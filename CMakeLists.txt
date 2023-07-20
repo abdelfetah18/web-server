@@ -11,6 +11,7 @@ set(SOURCES
     WebServer.cpp
     HttpRequest.cpp
     HttpResponse.cpp
+    PathHandler.cpp
     Socket.cpp
     File.cpp
     base/ByteBuffer.cpp
@@ -24,6 +25,7 @@ set(HEADERS
     WebServer.h
     HttpRequest.h
     HttpResponse.h
+    PathHandler.h
     Socket.h
     File.h
     base/ByteBuffer.h
