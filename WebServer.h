@@ -48,6 +48,8 @@ public:
     void use_static_path(const char*);
     void listen(const char port[]);
 
+    void WebServer::register_callback(const char* path,String key,callback call);
+
     // HttpRequest Methods
     void get(const char* path, callback);
     void head(const char* path, callback);

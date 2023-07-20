@@ -87,10 +87,7 @@ bool is_dynamic_path(const char* path){
     return false;
 }
 
-void WebServer::get(const char* path, callback call){
-    String key("GET:");
-    key.push(path);
-    // register a callback for that path
+void WebServer::register_callback(const char* path,String key,callback call){
     if(is_dynamic_path(path)){
         DynamicHandler handler;
         handler.call = call;
@@ -99,62 +96,41 @@ void WebServer::get(const char* path, callback call){
     }else{
         handlers.set( key, call);
     }
+}
+
+void WebServer::get(const char* path,callback call){
+    String key("GET:");
+    key.push(path);
+    // register a callback for that path
+    register_callback(path, key, call);
 }
 
 void WebServer::head(const char *path, callback call){
     String key("HEAD:");
     key.push(path);
     // register a callback for that path
-    if(is_dynamic_path(path)){
-        DynamicHandler handler;
-        handler.call = call;
-        handler.dynamic_path = key;
-        dynamic_handlers.append(handler);
-    }else{
-        handlers.set( key, call);
-    }
+    register_callback(path, key, call);
 }
 
 void WebServer::post(const char *path, callback call){
     String key("POST:");
     key.push(path);
     // register a callback for that path
-    if(is_dynamic_path(path)){
-        DynamicHandler handler;
-        handler.call = call;
-        handler.dynamic_path = key;
-        dynamic_handlers.append(handler);
-    }else{
-        handlers.set( key, call);
-    }
+    register_callback(path, key, call);
 }
 
 void WebServer::put(const char *path, callback call){
     String key("PUT:");
     key.push(path);
     // register a callback for that path
-    if(is_dynamic_path(path)){
-        DynamicHandler handler;
-        handler.call = call;
-        handler.dynamic_path = key;
-        dynamic_handlers.append(handler);
-    }else{
-        handlers.set( key, call);
-    }
+    register_callback(path, key, call);
 }
 
 void WebServer::del(const char *path, callback call){
     String key("DELETE:");
     key.push(path);
     // register a callback for that path
-    if(is_dynamic_path(path)){
-        DynamicHandler handler;
-        handler.call = call;
-        handler.dynamic_path = key;
-        dynamic_handlers.append(handler);
-    }else{
-        handlers.set( key, call);
-    }
+    register_callback(path, key, call);
 }
 
 // TODO: improve the algorithm
