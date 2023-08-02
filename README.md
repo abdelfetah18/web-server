@@ -64,7 +64,7 @@ int main()
 {
     WebServer server;
     server.use_static_path("public");
-    server.get("/home", Home);
+    server.get("/", Home);
     server.get("/About", About);
     // you can have multiple params through url as you can see
     // in this example we have two params 'username' and 'id'.
