@@ -72,6 +72,8 @@ int Socket::socket(){
         error("ERROR opening socket");
     
     #endif
+
+    return  socket_id;
 }
 
 int Socket::bind(){
@@ -102,6 +104,7 @@ int Socket::bind(){
         error("ERROR on binding"); 
 
     #endif
+    return  socket_id;
 }
 
 int Socket::listen(){
@@ -124,6 +127,7 @@ int Socket::listen(){
     #endif
 
     printf("Server is up running on port: %s\n", port);
+    return  0;
 }
 
 int Socket::accept(){
